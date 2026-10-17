@@ -200,7 +200,7 @@
             <input id="photos" name="photos" type="file" accept="image/jpeg,image/png,image/webp,application/pdf" multiple>
             <small class="field-hint">Optional: bis zu 3 Fotos oder PDFs, maximal 2 MB je Datei. Die Dateien werden mit Ihrer Anfrage übermittelt.</small>
           </div>
-          <div class="field-row honeypot" aria-hidden="true"><label for="company-website">Bitte nicht ausfüllen</label><input id="company-website" name="companyWebsite" tabindex="-1" autocomplete="off"></div>
+          <div class="field-row honeypot" aria-hidden="true"><label for="website-field">Bitte nicht ausfüllen</label><input id="website-field" name="_honey" tabindex="-1" autocomplete="off"></div>
           <div class="notice"><strong>Hinweis:</strong> Je genauer Ihre Angaben sind, desto besser können wir Aufwand und Ablauf einschätzen. Sie müssen noch keine endgültigen Entscheidungen getroffen haben.</div>
         </div>
 
@@ -213,7 +213,7 @@
             <div class="field-row"><label for="contact-method">Bevorzugter Kontakt</label><select id="contact-method" name="contactMethod"><option value="">Bitte auswählen</option><option>Telefon</option><option>E-Mail</option><option>WhatsApp (falls angeboten)</option></select></div>
           </div>
           <div class="summary-box"><div class="summary-heading"><strong>Ihre Angaben im Überblick</strong><button type="button" class="text-button" id="edit-summary">Angaben bearbeiten</button></div><div id="summary-content"></div></div>
-          <label class="privacy-check"><input type="checkbox" id="privacy" name="privacy" required><span>Ich habe die <a href="datenschutz.html" target="_blank" rel="noopener">Datenschutzhinweise</a> gelesen und bin mit der Verarbeitung meiner Angaben zur Bearbeitung der Anfrage einverstanden. *</span></label>
+          <label class="privacy-check"><input type="checkbox" id="privacy" name="privacy" required><span>Ich habe die <a href="datenschutz.html" target="_blank" rel="noopener">Datenschutzhinweise</a> gelesen und bin mit der Verarbeitung meiner Angaben durch Easy2Moove und den Formularanbieter FormSubmit zur Bearbeitung der Anfrage einverstanden. *</span></label>
           <p class="field-hint">Ihre Anfrage ist kostenlos und unverbindlich. Es wird noch kein verbindlicher Preis zugesagt.</p>
           <div id="submit-error" class="error-message" role="alert" hidden></div>
         </div>
@@ -229,8 +229,8 @@
       <section class="success-panel hidden" id="success-panel" aria-live="polite">
         <div class="success-icon">✓</div>
         <h2>Anfrage erfolgreich gesendet</h2>
-        <p>Vielen Dank. Ihre Anfrage wurde über die Website an den Mailserver von Easy2Moove übermittelt.</p>
-        <p>Wir melden uns unter den angegebenen Kontaktdaten. Die Zustellung der E-Mail hängt zusätzlich vom Mailserver ab.</p>
+        <p>Vielen Dank. Ihr Formular wurde an den E-Mail-Dienst übermittelt.</p>
+        <p>Wir melden uns unter den angegebenen Kontaktdaten. Bei der ersten Anfrage muss Easy2Moove den Empfang beim E-Mail-Dienst einmalig bestätigen.</p>
         <button type="button" class="btn btn-primary" id="download-btn">Angaben als Datei speichern</button>
         <button type="button" class="btn btn-secondary" id="restart-btn">Neue Anfrage starten</button>
       </section>

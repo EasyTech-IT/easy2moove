@@ -1,7 +1,7 @@
 /* =========================================================
    EASY2MOOVE – BEWERTUNGSASSISTENT
    Datei: script.js
-   Hinweis: Sendet Anfragen über den Website-Mailendpunkt.
+   Hinweis: Sendet Anfragen über FormSubmit an Easy2Moove.
    ========================================================= */
 (() => {
   "use strict";
@@ -221,10 +221,22 @@
   form.addEventListener("submit", async (event) => {
     event.preventDefault();
     if (!validateStep(currentStep)) return;
-    buildSummary();
     const error = get("submit-error");
     error.hidden = true;
 
+    const files = [...get("photos").files];
+    const allowedFileTypes = ["image/jpeg", "image/png", "image/webp", "application/pdf"];
+    if (
+      files.length > 3 ||
+      files.some((file) => file.size > 2 * 1024 * 1024 || !allowedFileTypes.includes(file.type))
+    ) {
+      error.textContent = "Bitte wählen Sie höchstens 3 JPEG-, PNG-, WebP- oder PDF-Dateien aus. Jede Datei darf maximal 2 MB groß sein.";
+      error.hidden = false;
+      error.scrollIntoView({ behavior: "smooth", block: "center" });
+      return;
+    }
+
+    buildSummary();
     const data = collectData();
     data.summary = [...document.querySelectorAll("#summary-content .summary-line")].map((row) => ({
       label: row.querySelector("span").textContent,
@@ -233,13 +245,27 @@
     data.privacyAccepted = get("privacy").checked;
 
     const payload = new FormData();
-    payload.append("request", JSON.stringify(data));
-    [...get("photos").files].forEach((file) => payload.append("photos[]", file));
+    const summaryText = data.summary
+      .map(({ label, value }) => `${label}: ${value}`)
+      .join("\n");
+    payload.append("name", val("name"));
+    payload.append("email", val("email"));
+    payload.append("phone", val("phone"));
+    payload.append("service", selectedService);
+    payload.append("request_summary", summaryText);
+    payload.append("privacy_consent", "Ja");
+    payload.append("_subject", `Neue Bewertungsanfrage – ${val("name")}`);
+    payload.append("_replyto", val("email"));
+    payload.append("_template", "table");
+    payload.append("_honey", "");
+    [...get("photos").files].forEach((file, index) => {
+      payload.append(`attachment_${index + 1}`, file, file.name);
+    });
 
     submitBtn.disabled = true;
     submitBtn.textContent = "Anfrage wird gesendet …";
     try {
-      const response = await fetch("bewertung-senden.php", {
+      const response = await fetch("https://formsubmit.co/ajax/info@easy2moove.de", {
         method: "POST",
         body: payload,
         headers: { Accept: "application/json" }
@@ -247,13 +273,16 @@
       const result = await response.json().catch(() => null);
       if (!response.ok) throw new Error(result?.message || "Die Anfrage konnte nicht gesendet werden.");
       if (!result) throw new Error("Die Serverantwort war ungültig. Bitte versuchen Sie es erneut.");
+      if (result.success !== true && result.success !== "true") {
+        throw new Error(result.message || "Der Formularanbieter hat die Anfrage nicht angenommen. Bitte versuchen Sie es später erneut.");
+      }
 
       window.__easy2mooveDraft = data;
       successPanel.querySelector("h2").textContent = "Anfrage erfolgreich gesendet";
       successPanel.querySelectorAll("p").forEach((paragraph, index) => {
         paragraph.textContent = index === 0
-          ? "Vielen Dank. Ihre Anfrage wurde über die Website an den Mailserver von Easy2Moove übermittelt."
-          : "Wir melden uns unter den angegebenen Kontaktdaten. Die Zustellung der E-Mail hängt zusätzlich vom Mailserver ab.";
+          ? "Vielen Dank. Ihr Formular wurde an den E-Mail-Dienst übermittelt."
+          : "Wir melden uns unter den angegebenen Kontaktdaten. Bei der ersten Anfrage muss Easy2Moove den Empfang beim E-Mail-Dienst einmalig bestätigen.";
       });
       form.classList.add("hidden");
       wizardActions.classList.add("hidden");
