@@ -1,0 +1,247 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Kostenlose und unverbindliche Umzugsbewertung bei Easy2Moove. Angaben Schritt für Schritt erfassen und per E-Mail mit Übersicht anfragen.">
+  <title>Kostenlose Umzugsbewertung | Easy2Moove</title>
+  <link rel="canonical" href="https://www.easy2moove.de/bewertung.html">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/bewertung.css">
+</head>
+<body>
+  <header class="header" role="banner">
+    <div class="header__island">
+      <a href="index.html" class="header__logo" aria-label="Easy2Moove Startseite">
+        <img src="img/logo-nav.png" alt="Easy2Moove – Transport & Vermietung" height="36">
+      </a>
+      <button class="nav__toggle" aria-label="Menü öffnen" aria-expanded="false" aria-controls="main-nav"><span></span><span></span><span></span></button>
+      <nav class="nav" id="main-nav" aria-label="Hauptnavigation">
+        <ul class="nav__list">
+          <li class="nav__item"><a href="index.html" class="nav__link">Home</a></li>
+          <li class="nav__item nav__item--has-dropdown">
+            <a href="leistungen.html" class="nav__link">Leistungen</a>
+            <ul class="nav__dropdown">
+              <li><a href="umzuege.html">Umzüge</a></li>
+              <li><a href="transporter.html">Transporter mieten</a></li>
+              <li><a href="weitere-leistungen.html">Weitere Leistungen</a></li>
+            </ul>
+          </li>
+          <li class="nav__item"><a href="faq.html" class="nav__link">FAQ</a></li>
+          <li class="nav__item"><a href="ueber-uns.html" class="nav__link">Über uns</a></li>
+          <li class="nav__item"><a href="blog.html" class="nav__link">Blog</a></li>
+          <li class="nav__item"><a href="kontakt.html" class="nav__link">Kontakt</a></li>
+          <li class="nav__item nav__cta"><a href="bewertung.html" class="btn btn--primary btn--small">Kostenlose Bewertung</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+  <main class="page-shell">
+    <section class="intro">
+      <p class="eyebrow">In wenigen Minuten erledigt</p>
+      <h1>Ihr Umzug. <span>Einfach geplant.</span></h1>
+      <p>Beantworten Sie Schritt für Schritt ein paar kurze Fragen. Wir prüfen Ihre Angaben und melden uns mit einer kostenlosen, unverbindlichen Einschätzung.</p>
+      <div class="trust-points" aria-label="Ihre Vorteile">
+        <span><i aria-hidden="true">✓</i> Kostenlos & unverbindlich</span>
+        <span><i aria-hidden="true">✓</i> Einfach Schritt für Schritt</span>
+        <span><i aria-hidden="true">✓</i> Persönliche Rückmeldung</span>
+      </div>
+    </section>
+
+    <section class="wizard-card" aria-labelledby="step-title">
+      <div class="progress-top">
+        <div>
+          <p class="step-kicker" id="step-kicker">SCHRITT 1 VON 7</p>
+          <h2 id="step-title">Was können wir für Sie tun?</h2>
+        </div>
+        <span class="progress-percent" id="progress-percent">14 %</span>
+      </div>
+      <div class="progress-track" role="progressbar" aria-label="Fortschritt" aria-valuemin="1" aria-valuemax="7" aria-valuenow="1" id="progress-track">
+        <span id="progress-fill"></span>
+      </div>
+
+      <form id="moving-form" novalidate>
+        <div class="step-panel is-active" data-step="0">
+          <p class="step-description">Wählen Sie die passende Leistung aus.</p>
+          <div class="choice-grid" data-choice-group="service">
+            <button type="button" class="choice-card" data-value="Privatumzug"><span class="choice-icon">⌂</span><strong>Privatumzug</strong><small>Wohnung oder Haus</small></button>
+            <button type="button" class="choice-card" data-value="Firmenumzug"><span class="choice-icon">▤</span><strong>Firmenumzug</strong><small>Büro oder Betrieb</small></button>
+            <button type="button" class="choice-card" data-value="Seniorenumzug"><span class="choice-icon">♡</span><strong>Seniorenumzug</strong><small>Mit besonderer Unterstützung</small></button>
+            <button type="button" class="choice-card" data-value="Entrümpelung"><span class="choice-icon">▱</span><strong>Entrümpelung</strong><small>Räumen und Entsorgen</small></button>
+            <button type="button" class="choice-card" data-value="Möbeltransport"><span class="choice-icon">▰</span><strong>Möbeltransport</strong><small>Einzelne Möbelstücke</small></button>
+            <button type="button" class="choice-card" data-value="Montage"><span class="choice-icon">⚒</span><strong>Möbelmontage</strong><small>Ab- und Aufbau</small></button>
+          </div>
+          <div class="field-row" id="property-type-wrap">
+            <label for="property-type">Umzugsobjekt</label>
+            <select id="property-type" name="propertyType">
+              <option value="">Bitte auswählen</option>
+              <option>Wohnung</option><option>Haus</option><option>Einzelnes Zimmer</option><option>Büro / Gewerbe</option><option>Lager / Sonstiges</option>
+            </select>
+          </div>
+          <div class="field-row" id="household-wrap">
+            <label for="household">Wie viele Personen gehören zum Haushalt?</label>
+            <select id="household" name="household">
+              <option value="">Bitte auswählen</option><option>1 Person</option><option>2 Personen</option><option>3–4 Personen</option><option>5 oder mehr Personen</option><option>Nicht zutreffend</option>
+            </select>
+          </div>
+          <div class="field-row hidden" id="office-wrap">
+            <label for="office-size">Wie groß ist die Büro- oder Gewerbefläche ungefähr?</label>
+            <select id="office-size" name="officeSize">
+              <option value="">Bitte auswählen</option><option>Bis 50 m²</option><option>51–100 m²</option><option>101–250 m²</option><option>251–500 m²</option><option>Mehr als 500 m²</option><option>Noch unklar</option>
+            </select>
+          </div>
+          <div class="field-row">
+            <label for="area">Wohnfläche ungefähr (optional)</label>
+            <select id="area" name="area">
+              <option value="">Bitte auswählen</option><option>Bis 30 m²</option><option>31–50 m²</option><option>51–75 m²</option><option>76–100 m²</option><option>101–150 m²</option><option>Mehr als 150 m²</option><option>Nicht bekannt</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="step-panel" data-step="1">
+          <p class="step-description">Geben Sie uns einen groben Überblick über das Umzugsgut. Schätzungen reichen aus.</p>
+          <div class="room-grid" id="room-grid">
+            <div class="room-counter"><div><strong>Wohn-/Esszimmer</strong><small>Anzahl der Räume</small></div><div class="counter"><button type="button" data-counter="living" data-delta="-1" aria-label="Wohnzimmer verringern">−</button><output id="count-living">1</output><button type="button" data-counter="living" data-delta="1" aria-label="Wohnzimmer erhöhen">+</button></div></div>
+            <div class="room-counter"><div><strong>Küche</strong><small>Anzahl der Küchen</small></div><div class="counter"><button type="button" data-counter="kitchen" data-delta="-1" aria-label="Küche verringern">−</button><output id="count-kitchen">1</output><button type="button" data-counter="kitchen" data-delta="1" aria-label="Küche erhöhen">+</button></div></div>
+            <div class="room-counter"><div><strong>Schlafzimmer</strong><small>Anzahl der Räume</small></div><div class="counter"><button type="button" data-counter="bedroom" data-delta="-1" aria-label="Schlafzimmer verringern">−</button><output id="count-bedroom">1</output><button type="button" data-counter="bedroom" data-delta="1" aria-label="Schlafzimmer erhöhen">+</button></div></div>
+            <div class="room-counter"><div><strong>Badezimmer / Flur</strong><small>Zusammen gezählt</small></div><div class="counter"><button type="button" data-counter="bathhall" data-delta="-1" aria-label="Bad und Flur verringern">−</button><output id="count-bathhall">1</output><button type="button" data-counter="bathhall" data-delta="1" aria-label="Bad und Flur erhöhen">+</button></div></div>
+            <div class="room-counter office-only hidden"><div><strong>Büroarbeitsplätze</strong><small>Anzahl der Plätze</small></div><div class="counter"><button type="button" data-counter="workplaces" data-delta="-1" aria-label="Arbeitsplätze verringern">−</button><output id="count-workplaces">5</output><button type="button" data-counter="workplaces" data-delta="1" aria-label="Arbeitsplätze erhöhen">+</button></div></div>
+            <div class="room-counter"><div><strong>Weitere Räume</strong><small>Gästezimmer, Büro usw.</small></div><div class="counter"><button type="button" data-counter="other" data-delta="-1" aria-label="Weitere Räume verringern">−</button><output id="count-other">0</output><button type="button" data-counter="other" data-delta="1" aria-label="Weitere Räume erhöhen">+</button></div></div>
+          </div>
+          <div class="field-row">
+            <label for="shelf-meters">Bücher-/Archivregale (laufende Meter, optional)</label>
+            <input id="shelf-meters" name="shelfMeters" type="number" min="0" max="500" placeholder="z. B. 4">
+          </div>
+          <fieldset class="check-field">
+            <legend>Welche zusätzlichen Bereiche gibt es?</legend>
+            <div class="check-grid">
+              <label><input type="checkbox" name="extraAreas" value="Keller"> Keller</label>
+              <label><input type="checkbox" name="extraAreas" value="Dachboden"> Dachboden</label>
+              <label><input type="checkbox" name="extraAreas" value="Garage"> Garage</label>
+              <label><input type="checkbox" name="extraAreas" value="Balkon / Terrasse"> Balkon / Terrasse</label>
+              <label><input type="checkbox" name="extraAreas" value="Garten / Schuppen"> Garten / Schuppen</label>
+              <label><input type="checkbox" name="extraAreas" value="Keine"> Keine</label>
+            </div>
+          </fieldset>
+          <fieldset class="check-field">
+            <legend>Besondere oder schwere Gegenstände?</legend>
+            <div class="check-grid">
+              <label><input type="checkbox" name="heavyItems" value="Klavier"> Klavier / Flügel</label>
+              <label><input type="checkbox" name="heavyItems" value="Tresor"> Tresor</label>
+              <label><input type="checkbox" name="heavyItems" value="Aquarium"> Großes Aquarium</label>
+              <label><input type="checkbox" name="heavyItems" value="Fitnessgeräte"> Fitnessgeräte</label>
+              <label><input type="checkbox" name="heavyItems" value="Empfindliche Gegenstände"> Empfindliche Gegenstände</label>
+              <label><input type="checkbox" name="heavyItems" value="Keine"> Keine</label>
+            </div>
+          </fieldset>
+        </div>
+
+        <div class="step-panel" data-step="2">
+          <p class="step-description">Wo soll der Umzug starten? Die genaue Adresse hilft uns bei der Planung.</p>
+          <div class="form-grid">
+            <div class="field-row"><label for="from-street">Straße und Hausnummer *</label><input id="from-street" name="fromStreet" autocomplete="street-address" required></div>
+            <div class="field-row"><label for="from-zip">Postleitzahl *</label><input id="from-zip" name="fromZip" inputmode="numeric" autocomplete="postal-code" required></div>
+            <div class="field-row"><label for="from-city">Ort *</label><input id="from-city" name="fromCity" autocomplete="address-level2" required></div>
+            <div class="field-row"><label for="from-floor">Etage</label><select id="from-floor" name="fromFloor"><option value="">Bitte auswählen</option><option>Erdgeschoss</option><option>1. Etage</option><option>2. Etage</option><option>3. Etage</option><option>4. Etage oder höher</option><option>Keller / Souterrain</option></select></div>
+            <div class="field-row"><label for="from-elevator">Aufzug vorhanden?</label><select id="from-elevator" name="fromElevator"><option value="">Bitte auswählen</option><option>Ja</option><option>Nein</option><option>Teilweise / unklar</option></select></div>
+            <div class="field-row"><label for="from-parking">Parken direkt am Gebäude möglich?</label><select id="from-parking" name="fromParking"><option value="">Bitte auswählen</option><option>Ja</option><option>Nein</option><option>Unklar</option></select></div>
+          </div>
+          <div class="field-row"><label for="from-access">Zugang / Laufweg (optional)</label><select id="from-access" name="fromAccess"><option value="">Bitte auswählen</option><option>Kurzer Laufweg</option><option>Mittlerer Laufweg</option><option>Langer Laufweg</option><option>Enges Treppenhaus / schwieriger Zugang</option><option>Noch unklar</option></select></div>
+        </div>
+
+        <div class="step-panel" data-step="3">
+          <p class="step-description">Wo geht es hin und wann möchten Sie umziehen?</p>
+          <label class="inline-check"><input type="checkbox" id="same-address" name="sameAddress"> Zieladresse ist noch nicht bekannt</label>
+          <div class="form-grid" id="destination-fields">
+            <div class="field-row"><label for="to-street">Straße und Hausnummer</label><input id="to-street" name="toStreet" autocomplete="street-address"></div>
+            <div class="field-row"><label for="to-zip">Postleitzahl</label><input id="to-zip" name="toZip" inputmode="numeric" autocomplete="postal-code"></div>
+            <div class="field-row"><label for="to-city">Ort</label><input id="to-city" name="toCity" autocomplete="address-level2"></div>
+            <div class="field-row"><label for="to-floor">Etage</label><select id="to-floor" name="toFloor"><option value="">Bitte auswählen</option><option>Erdgeschoss</option><option>1. Etage</option><option>2. Etage</option><option>3. Etage</option><option>4. Etage oder höher</option><option>Keller / Souterrain</option></select></div>
+            <div class="field-row"><label for="to-elevator">Aufzug vorhanden?</label><select id="to-elevator" name="toElevator"><option value="">Bitte auswählen</option><option>Ja</option><option>Nein</option><option>Teilweise / unklar</option></select></div>
+            <div class="field-row"><label for="to-parking">Parken direkt am Gebäude möglich?</label><select id="to-parking" name="toParking"><option value="">Bitte auswählen</option><option>Ja</option><option>Nein</option><option>Unklar</option></select></div>
+          </div>
+          <div class="form-grid date-grid">
+            <div class="field-row"><label for="move-date">Wunschtermin</label><input type="date" id="move-date" name="moveDate"></div>
+            <div class="field-row"><label for="date-flex">Wie flexibel sind Sie?</label><select id="date-flex" name="dateFlex"><option value="">Bitte auswählen</option><option>Nur an diesem Tag</option><option>± 3 Tage</option><option>± 1 Woche</option><option>Flexibel innerhalb eines Monats</option><option>Termin noch offen</option></select></div>
+          </div>
+        </div>
+
+        <div class="step-panel" data-step="4">
+          <p class="step-description">Wählen Sie aus, wobei wir Sie unterstützen sollen. Sie können mehrere Leistungen auswählen.</p>
+          <fieldset class="service-fieldset">
+            <legend>Vor dem / beim Umzug</legend>
+            <div class="service-options">
+              <label class="service-option"><input type="checkbox" name="services" value="Umzugskartons / Verpackungsmaterial"><span><strong>Umzugskartons</strong><small>Lieferung von Kartons und Material</small></span></label>
+              <label class="service-option"><input type="checkbox" name="services" value="Einpackservice"><span><strong>Einpackservice</strong><small>Verpacken von Hausrat und Zerbrechlichem</small></span></label>
+              <label class="service-option"><input type="checkbox" name="services" value="Möbel- / Küchenabbau"><span><strong>Möbel- oder Küchenabbau</strong><small>Demontage vor dem Transport</small></span></label>
+              <label class="service-option"><input type="checkbox" name="services" value="Zwischenlagerung"><span><strong>Zwischenlagerung</strong><small>Möbel oder Hausrat einlagern</small></span></label>
+              <label class="service-option"><input type="checkbox" name="services" value="Entrümpelung / Sperrmüll"><span><strong>Entrümpelung / Sperrmüll</strong><small>Abholung und Entsorgung anfragen</small></span></label>
+              <label class="service-option"><input type="checkbox" name="services" value="Reinigung / Renovierung"><span><strong>Reinigung / Renovierung</strong><small>Unterstützung rund um die Übergabe</small></span></label>
+            </div>
+          </fieldset>
+          <fieldset class="service-fieldset">
+            <legend>Am Zielort</legend>
+            <div class="service-options">
+              <label class="service-option"><input type="checkbox" name="services" value="Möbel- / Küchenaufbau"><span><strong>Möbel- oder Küchenaufbau</strong><small>Aufbau am neuen Standort</small></span></label>
+              <label class="service-option"><input type="checkbox" name="services" value="Auspackservice"><span><strong>Auspackservice</strong><small>Hilfe beim Auspacken</small></span></label>
+              <label class="service-option"><input type="checkbox" name="services" value="Waschmaschine / Trockner anschließen"><span><strong>Waschmaschine / Trockner</strong><small>Anschluss nach Absprache</small></span></label>
+              <label class="service-option"><input type="checkbox" name="services" value="Kartons abholen"><span><strong>Kartons abholen</strong><small>Leere Umzugskartons einsammeln</small></span></label>
+              <label class="service-option"><input type="checkbox" name="services" value="Endreinigung"><span><strong>Endreinigung</strong><small>Reinigung nach dem Umzug</small></span></label>
+            </div>
+          </fieldset>
+          <div class="field-row"><label for="other-service">Weitere Wünsche (optional)</label><input id="other-service" name="otherService" placeholder="Was sollen wir zusätzlich berücksichtigen?"></div>
+        </div>
+
+        <div class="step-panel" data-step="5">
+          <p class="step-description">Gibt es Besonderheiten, die wir wissen sollten?</p>
+          <div class="field-row"><label for="notes">Hinweise zum Umzug (optional)</label><textarea id="notes" name="notes" rows="5" placeholder="Zum Beispiel enge Zufahrt, empfindliche Möbel, gewünschte Zusatzleistungen …"></textarea></div>
+          <div class="field-row">
+            <label for="photos">Fotos oder Dokumente hinzufügen (optional)</label>
+            <input id="photos" name="photos" type="file" accept="image/jpeg,image/png,image/webp,application/pdf" multiple>
+            <small class="field-hint">Optional: bis zu 3 Fotos oder PDFs, maximal 2 MB je Datei. Die Dateien werden mit Ihrer Anfrage übermittelt.</small>
+          </div>
+          <div class="field-row honeypot" aria-hidden="true"><label for="company-website">Bitte nicht ausfüllen</label><input id="company-website" name="companyWebsite" tabindex="-1" autocomplete="off"></div>
+          <div class="notice"><strong>Hinweis:</strong> Je genauer Ihre Angaben sind, desto besser können wir Aufwand und Ablauf einschätzen. Sie müssen noch keine endgültigen Entscheidungen getroffen haben.</div>
+        </div>
+
+        <div class="step-panel" data-step="6">
+          <p class="step-description">Fast geschafft. Wie können wir Sie erreichen?</p>
+          <div class="form-grid">
+            <div class="field-row"><label for="name">Vor- und Nachname *</label><input id="name" name="name" autocomplete="name" required></div>
+            <div class="field-row"><label for="phone">Telefonnummer *</label><input id="phone" name="phone" type="tel" autocomplete="tel" required></div>
+            <div class="field-row"><label for="email">E-Mail-Adresse *</label><input id="email" name="email" type="email" autocomplete="email" required></div>
+            <div class="field-row"><label for="contact-method">Bevorzugter Kontakt</label><select id="contact-method" name="contactMethod"><option value="">Bitte auswählen</option><option>Telefon</option><option>E-Mail</option><option>WhatsApp (falls angeboten)</option></select></div>
+          </div>
+          <div class="summary-box"><div class="summary-heading"><strong>Ihre Angaben im Überblick</strong><button type="button" class="text-button" id="edit-summary">Angaben bearbeiten</button></div><div id="summary-content"></div></div>
+          <label class="privacy-check"><input type="checkbox" id="privacy" name="privacy" required><span>Ich habe die <a href="datenschutz.html" target="_blank" rel="noopener">Datenschutzhinweise</a> gelesen und bin mit der Verarbeitung meiner Angaben zur Bearbeitung der Anfrage einverstanden. *</span></label>
+          <p class="field-hint">Ihre Anfrage ist kostenlos und unverbindlich. Es wird noch kein verbindlicher Preis zugesagt.</p>
+          <div id="submit-error" class="error-message" role="alert" hidden></div>
+        </div>
+
+        <div class="wizard-actions">
+          <button type="button" class="btn btn-secondary" id="back-btn" disabled>Zurück</button>
+          <span class="action-spacer"></span>
+          <button type="button" class="btn btn-primary" id="next-btn">Weiter <span aria-hidden="true">→</span></button>
+          <button type="submit" class="btn btn-primary hidden" id="submit-btn">Anfrage über die Website senden <span aria-hidden="true">→</span></button>
+        </div>
+      </form>
+
+      <section class="success-panel hidden" id="success-panel" aria-live="polite">
+        <div class="success-icon">✓</div>
+        <h2>Anfrage erfolgreich gesendet</h2>
+        <p>Vielen Dank. Ihre Anfrage wurde über die Website an den Mailserver von Easy2Moove übermittelt.</p>
+        <p>Wir melden uns unter den angegebenen Kontaktdaten. Die Zustellung der E-Mail hängt zusätzlich vom Mailserver ab.</p>
+        <button type="button" class="btn btn-primary" id="download-btn">Angaben als Datei speichern</button>
+        <button type="button" class="btn btn-secondary" id="restart-btn">Neue Anfrage starten</button>
+      </section>
+    </section>
+
+    <footer class="page-footer">
+      <p>Easy2Moove · Kostenlose und unverbindliche Anfrage</p>
+      <p><a href="impressum.html">Impressum</a> <span aria-hidden="true">·</span> <a href="datenschutz.html">Datenschutz</a> <span aria-hidden="true">·</span> <a href="kontakt.html">Kontakt</a></p>
+    </footer>
+  </main>
+  <script src="js/main.js" defer></script>
+  <script src="js/bewertung.js" defer></script>
+</body>
+</html>

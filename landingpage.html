@@ -1,0 +1,680 @@
+﻿<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Easy2Moove – Alle wichtigen Links auf einen Blick</title>
+  <meta name="description" content="Easy2Moove: Schnell zum Kontakt, zu den Leistungen und Social Media. Umzüge und Transporte in der Wetterau und im Main-Kinzig-Kreis anfragen.">
+  <meta name="robots" content="noindex, follow">
+  <link rel="canonical" href="https://www.easy2moove.de/landingpage.html">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer">
+  <style>
+    /* ===== RESET & BASE ===== */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --green:       #00A859;
+      --green-dark:  #007A3D;
+      --green-light: #E8F7EF;
+      --accent:      #66BB66;
+      --black:       #000000;
+      --white:       #FFFFFF;
+      --gray-50:     #F7F7F7;
+      --gray-100:    #EEEEEE;
+      --gray-200:    #DDDDDD;
+      --gray-600:    #555555;
+      --gray-800:    #222222;
+      --radius:      14px;
+      --radius-pill: 999px;
+      --shadow:      0 2px 8px rgba(0,0,0,.09);
+      --shadow-md:   0 6px 20px rgba(0,0,0,.12);
+      --shadow-hover:0 12px 32px rgba(0,0,0,.16);
+      --shadow-nav:  0 8px 32px rgba(0,0,0,.12);
+      --transition:  .25s ease;
+      --font:        'Inter', 'Segoe UI', system-ui, sans-serif;
+    }
+
+    html { scroll-behavior: smooth; font-size: 16px; }
+    body {
+      font-family: var(--font);
+      color: var(--gray-800);
+      background: var(--gray-50);
+      line-height: 1.7;
+      -webkit-font-smoothing: antialiased;
+      min-height: 100vh;
+    }
+    img { max-width: 100%; height: auto; display: block; }
+    a { color: var(--green); text-decoration: none; }
+    a:focus-visible, button:focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; }
+    ul { list-style: none; }
+
+    /* ===== FLOATING NAVBAR (matches main site exactly) ===== */
+    .header {
+      position: fixed; top: 0; left: 0; right: 0;
+      z-index: 1000;
+      padding: .75rem 1rem;
+      pointer-events: none;
+    }
+    .header__island {
+      max-width: 1100px;
+      margin: 0 auto;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: .6rem 1rem .6rem 1.2rem;
+      border-radius: var(--radius-pill);
+      background: rgba(255,255,255,.7);
+      -webkit-backdrop-filter: blur(20px) saturate(180%);
+      backdrop-filter: blur(20px) saturate(180%);
+      box-shadow: var(--shadow-nav);
+      border: 1px solid rgba(255,255,255,.45);
+      pointer-events: auto;
+    }
+    .header__logo {
+      display: flex; align-items: center; gap: .5rem;
+      font-weight: 700; font-size: 1.15rem; color: var(--black); flex-shrink: 0;
+      transition: color var(--transition);
+    }
+    .header__logo img { height: 36px; width: auto; }
+    .header__logo:hover { color: var(--green); }
+
+    .nav { flex: 1; }
+    .nav__list { display: flex; gap: .2rem; align-items: center; justify-content: center; }
+    .nav__link {
+      font-weight: 500; font-size: .9rem; color: var(--gray-800);
+      padding: .4rem .65rem; border-radius: var(--radius-pill);
+      transition: background var(--transition), color var(--transition);
+    }
+    .nav__link:hover { background: rgba(0,168,89,.08); color: var(--green); }
+    .nav__link--active { background: rgba(0,168,89,.1); color: var(--green); }
+
+    /* Dropdown */
+    .nav__item { position: relative; }
+    .nav__dropdown {
+      display: none; position: absolute; top: calc(100% + .5rem); left: 50%; transform: translateX(-50%);
+      background: rgba(255,255,255,.9);
+      -webkit-backdrop-filter: blur(20px) saturate(180%);
+      backdrop-filter: blur(20px) saturate(180%);
+      min-width: 200px;
+      box-shadow: var(--shadow-hover); border-radius: var(--radius);
+      border: 1px solid rgba(255,255,255,.5);
+      padding: .5rem 0; z-index: 100;
+    }
+    .nav__item:hover .nav__dropdown,
+    .nav__item:focus-within .nav__dropdown { display: block; }
+    .nav__dropdown a {
+      display: block; padding: .5rem 1rem; color: var(--gray-800); font-size: .9rem;
+      transition: background var(--transition), color var(--transition);
+    }
+    .nav__dropdown a:hover { background: rgba(0,168,89,.06); color: var(--green); }
+
+    /* CTA */
+    .nav__cta { margin-left: .25rem; }
+    .btn--nav {
+      display: inline-flex; align-items: center; gap: .45rem;
+      padding: .55rem 1.3rem;
+      font-size: .9rem; font-weight: 700;
+      border: 2px solid transparent;
+      border-radius: var(--radius-pill);
+      background: var(--green); color: var(--white);
+      cursor: pointer;
+      box-shadow: 0 2px 12px rgba(0,168,89,.35);
+      transition: background var(--transition), box-shadow var(--transition), transform var(--transition);
+    }
+    .btn--nav:hover { background: var(--green-dark); box-shadow: 0 4px 20px rgba(0,168,89,.45); transform: translateY(-1px); color: var(--white); }
+
+    /* Hamburger */
+    .nav__toggle {
+      display: none; background: none; border: none; cursor: pointer;
+      width: 36px; height: 36px; position: relative;
+    }
+    .nav__toggle span {
+      display: block; width: 22px; height: 2px; background: var(--black);
+      position: absolute; left: 7px; transition: var(--transition);
+    }
+    .nav__toggle span:nth-child(1) { top: 10px; }
+    .nav__toggle span:nth-child(2) { top: 17px; }
+    .nav__toggle span:nth-child(3) { top: 24px; }
+    .nav__toggle[aria-expanded="true"] span:nth-child(1) { transform: rotate(45deg); top: 17px; }
+    .nav__toggle[aria-expanded="true"] span:nth-child(2) { opacity: 0; }
+    .nav__toggle[aria-expanded="true"] span:nth-child(3) { transform: rotate(-45deg); top: 17px; }
+
+    @media (max-width: 1023px) {
+      .header { padding: .5rem .75rem; }
+      .header__island { border-radius: var(--radius); padding: .5rem .75rem; }
+      .nav__toggle { display: block; }
+      .nav {
+        display: none; position: absolute; top: calc(100% + .5rem);
+        left: 0; right: 0;
+        background: rgba(255,255,255,.95);
+        -webkit-backdrop-filter: blur(20px) saturate(180%);
+        backdrop-filter: blur(20px) saturate(180%);
+        box-shadow: var(--shadow-hover);
+        border-radius: var(--radius);
+        border: 1px solid rgba(255,255,255,.5);
+        overflow: hidden;
+      }
+      .nav--open { display: block; }
+      .nav__list { flex-direction: column; padding: .75rem; gap: 0; }
+      .nav__link { display: block; padding: .75rem; border-radius: var(--radius); font-size: 1rem; }
+      .nav__cta { width: 100%; padding: .25rem .75rem .75rem; }
+      .btn--nav { width: 100%; justify-content: center; padding: .7rem 1rem; font-size: 1rem; }
+      .nav__dropdown { position: static; box-shadow: none; padding-left: .75rem; transform: none; border: none; background: none; -webkit-backdrop-filter: none; backdrop-filter: none; }
+      .nav__item:hover .nav__dropdown { display: none; }
+      .nav__item--open .nav__dropdown { display: block; }
+    }
+
+    /* ===== HERO ===== */
+    .lp-hero {
+      padding: 7rem 1rem 3.5rem;
+      text-align: center;
+      background: linear-gradient(160deg, #000 0%, #0d2b1a 50%, #004d26 100%);
+      position: relative;
+      overflow: hidden;
+    }
+    .lp-hero::before {
+      content: '';
+      position: absolute; inset: 0;
+      background: radial-gradient(ellipse at 50% 0%, rgba(0,168,89,.35) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .lp-hero__logo {
+      width: 110px; height: auto;
+      margin: 0 auto 1.5rem;
+      filter: brightness(0) invert(1);
+    }
+    .lp-hero__title {
+      font-size: clamp(1.65rem, 5vw, 2.75rem);
+      font-weight: 700;
+      color: var(--white);
+      line-height: 1.2;
+      margin-bottom: .75rem;
+    }
+    .lp-hero__title span { color: var(--green); }
+    .lp-hero__sub {
+      font-size: clamp(.95rem, 2.5vw, 1.1rem);
+      color: rgba(255,255,255,.75);
+      max-width: 500px;
+      margin: 0 auto 2rem;
+    }
+    .lp-hero__badges {
+      display: flex; flex-wrap: wrap; justify-content: center; gap: .6rem;
+    }
+    .lp-hero__badge {
+      display: inline-flex; align-items: center; gap: .4rem;
+      padding: .35rem .9rem;
+      border-radius: var(--radius-pill);
+      background: rgba(255,255,255,.1);
+      border: 1px solid rgba(255,255,255,.2);
+      color: rgba(255,255,255,.85);
+      font-size: .82rem; font-weight: 500;
+    }
+    .lp-hero__badge i { color: var(--green); font-size: .8rem; }
+
+    /* ===== LINK GRID ===== */
+    .lp-main {
+      max-width: 740px;
+      margin: 0 auto;
+      padding: 2.5rem 1rem 1.5rem;
+    }
+
+    .lp-section-label {
+      grid-column: 1 / -1;
+      font-size: .7rem;
+      font-weight: 700;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      color: var(--gray-600);
+      margin-bottom: .1rem;
+      padding-left: .25rem;
+    }
+
+    .lp-group {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: .75rem;
+      margin-bottom: 2rem;
+    }
+
+    /* Lone last button spans both columns */
+    .lp-group > .lp-btn:last-child:nth-child(even) { grid-column: 1 / -1; }
+
+    /* ===== LINK BUTTON BASE ===== */
+    .lp-btn {
+      display: flex;
+      align-items: center;
+      gap: .75rem;
+      width: 100%;
+      padding: .9rem 1rem;
+      margin-bottom: 0;
+      border-radius: var(--radius);
+      font-size: 1rem;
+      font-weight: 600;
+      color: var(--white);
+      text-decoration: none;
+      cursor: pointer;
+      border: none;
+      position: relative;
+      overflow: hidden;
+      transition: transform var(--transition), box-shadow var(--transition), filter var(--transition);
+      box-shadow: var(--shadow-md);
+    }
+    .lp-btn:last-child { margin-bottom: 0; }
+    .lp-btn:hover {
+      transform: translateY(-3px) scale(1.012);
+      box-shadow: var(--shadow-hover);
+      filter: brightness(1.06);
+      color: var(--white);
+    }
+    .lp-btn:active { transform: translateY(0) scale(.99); }
+
+    .lp-btn__icon {
+      flex-shrink: 0;
+      width: 44px; height: 44px;
+      border-radius: 10px;
+      background: rgba(255,255,255,.18);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.25rem;
+    }
+    .lp-btn__text { flex: 1; }
+    .lp-btn__label { display: block; font-size: .78rem; font-weight: 500; opacity: .8; margin-bottom: .05rem; }
+    .lp-btn__title { display: block; font-size: 1rem; font-weight: 700; line-height: 1.2; }
+    .lp-btn__arrow {
+      flex-shrink: 0;
+      opacity: .6;
+      font-size: .9rem;
+      transition: transform var(--transition), opacity var(--transition);
+    }
+    .lp-btn:hover .lp-btn__arrow { opacity: 1; transform: translateX(4px); }
+
+    /* ===== BUTTON COLORS ===== */
+    /* WhatsApp */
+    .lp-btn--whatsapp { background: linear-gradient(135deg, #25D366 0%, #128C7E 100%); }
+    /* Phone */
+    .lp-btn--phone { background: linear-gradient(135deg, var(--green) 0%, var(--green-dark) 100%); }
+    /* Email */
+    .lp-btn--email { background: linear-gradient(135deg, #2563eb 0%, #1e40af 100%); }
+    /* Website */
+    .lp-btn--website { background: linear-gradient(135deg, #111 0%, #333 100%); }
+    /* Google Maps */
+    .lp-btn--maps { background: linear-gradient(135deg, #EA4335 0%, #B31412 100%); }
+    /* Google Reviews */
+    .lp-btn--reviews { background: linear-gradient(135deg, #FBBC05 0%, #F09300 100%); color: #1a1a1a; }
+    .lp-btn--reviews .lp-btn__label { color: #1a1a1a; opacity: .65; }
+    .lp-btn--reviews .lp-btn__arrow { opacity: .5; }
+    /* Facebook */
+    .lp-btn--facebook { background: linear-gradient(135deg, #1877F2 0%, #0d5ec9 100%); }
+    /* Instagram */
+    .lp-btn--instagram { background: linear-gradient(135deg, #E1306C 0%, #833AB4 50%, #FD1D1D 100%); }
+    /* LinkedIn */
+    .lp-btn--linkedin { background: linear-gradient(135deg, #0077B5 0%, #005582 100%); }
+    /* Leistungen */
+    .lp-btn--services { background: linear-gradient(135deg, #00A859 0%, #004d26 100%); }
+    /* Kontakt/Angebot */
+    .lp-btn--offer {
+      background: linear-gradient(135deg, var(--green) 0%, var(--green-dark) 100%);
+      box-shadow: 0 6px 24px rgba(0,168,89,.4);
+    }
+    .lp-btn--offer:hover { box-shadow: 0 10px 36px rgba(0,168,89,.5); }
+
+    /* ===== FEATURED / HERO CTA ===== */
+    .lp-btn--featured {
+      padding: 1.2rem 1.4rem;
+      border-radius: 18px;
+      font-size: 1.05rem;
+    }
+    .lp-btn--featured .lp-btn__icon {
+      width: 50px; height: 50px;
+      border-radius: 12px;
+      font-size: 1.5rem;
+    }
+
+    /* ===== STARS ROW ===== */
+    .lp-stars {
+      display: flex; align-items: center; gap: .3rem;
+      margin-top: .2rem;
+    }
+    .lp-stars i { color: #FBBC05; font-size: .75rem; }
+    .lp-stars span { font-size: .72rem; font-weight: 600; color: rgba(0,0,0,.5); margin-left: .25rem; }
+
+    /* ===== DIVIDER ===== */
+    .lp-divider {
+      display: flex; align-items: center; gap: .75rem;
+      margin: 1.75rem 0;
+      color: var(--gray-600); font-size: .78rem; font-weight: 500; letter-spacing: .05em;
+      text-transform: uppercase;
+    }
+    .lp-divider::before, .lp-divider::after {
+      content: ''; flex: 1;
+      height: 1px; background: var(--gray-200);
+    }
+
+    /* ===== TRUST STRIP ===== */
+    .lp-trust {
+      display: flex; flex-wrap: wrap; justify-content: center; gap: .5rem 1.5rem;
+      padding: 1.25rem 0;
+      margin-bottom: .5rem;
+    }
+    .lp-trust__item {
+      display: flex; align-items: center; gap: .45rem;
+      font-size: .82rem; font-weight: 600; color: var(--gray-600);
+    }
+    .lp-trust__item i { color: var(--green); font-size: .85rem; }
+
+    /* ===== FOOTER ===== */
+    .lp-footer {
+      background: var(--black);
+      color: rgba(255,255,255,.55);
+      text-align: center;
+      padding: 2rem 1rem;
+      font-size: .85rem;
+    }
+    .lp-footer a { color: rgba(255,255,255,.65); transition: color var(--transition); }
+    .lp-footer a:hover { color: var(--green); }
+    .lp-footer__links { display: flex; justify-content: center; gap: 1.5rem; margin-bottom: .75rem; flex-wrap: wrap; }
+    .lp-footer__copy { opacity: .5; }
+
+    /* ===== ANIMATE ON SCROLL ===== */
+    .lp-reveal {
+      opacity: 0;
+      transform: translateY(22px);
+      transition: opacity .45s ease, transform .45s ease;
+    }
+    .lp-reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* ===== SCROLL-TO-TOP ===== */
+    .back-to-top {
+      position: fixed; bottom: 1.5rem; right: 1.5rem;
+      width: 44px; height: 44px;
+      border-radius: 50%;
+      background: var(--green); color: var(--white);
+      border: none; cursor: pointer;
+      font-size: 1.2rem; font-weight: 700;
+      display: flex; align-items: center; justify-content: center;
+      box-shadow: var(--shadow-md);
+      opacity: 0; pointer-events: none;
+      transition: opacity var(--transition), transform var(--transition);
+      z-index: 900;
+    }
+    .back-to-top.visible { opacity: 1; pointer-events: auto; }
+    .back-to-top:hover { transform: translateY(-3px); }
+
+    /* ===== RESPONSIVE TWEAKS ===== */
+    @media (max-width: 540px) {
+      .lp-main { padding: 1.75rem .75rem 1.5rem; }
+      .lp-group { gap: .55rem; }
+      .lp-btn { padding: .75rem .65rem; gap: .55rem; }
+      .lp-btn__label { font-size: .65rem; }
+      .lp-btn__title { font-size: .85rem; }
+      .lp-btn__icon { width: 36px; height: 36px; font-size: 1rem; border-radius: 8px; }
+      .lp-btn__arrow { font-size: .75rem; }
+      .lp-btn--featured { padding: .85rem .75rem; border-radius: 14px; }
+      .lp-btn--featured .lp-btn__icon { width: 40px; height: 40px; font-size: 1.15rem; border-radius: 10px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ==================== NAVBAR ==================== -->
+  <header class="header" role="banner">
+    <div class="header__island">
+      <a href="index.html" class="header__logo" aria-label="Easy2Moove Startseite">
+        <img src="img/logo-nav.png" alt="Easy2Moove – Transport & Vermietung" height="36">
+      </a>
+      <button class="nav__toggle" aria-label="Menü öffnen" aria-expanded="false" aria-controls="main-nav">
+        <span></span><span></span><span></span>
+      </button>
+      <nav class="nav" id="main-nav" aria-label="Hauptnavigation">
+        <ul class="nav__list">
+          <li class="nav__item"><a href="index.html" class="nav__link">Home</a></li>
+          <li class="nav__item nav__item--has-dropdown">
+            <a href="leistungen.html" class="nav__link">Leistungen</a>
+            <ul class="nav__dropdown">
+              <li><a href="umzuege.html">Umzüge</a></li>
+              <li><a href="transporter.html">Transporter mieten</a></li>
+              <li><a href="weitere-leistungen.html">Weitere Leistungen</a></li>
+            </ul>
+          </li>
+          <li class="nav__item"><a href="faq.html" class="nav__link">FAQ</a></li>
+          <li class="nav__item"><a href="ueber-uns.html" class="nav__link">Über uns</a></li>
+          <li class="nav__item"><a href="blog.html" class="nav__link">Blog</a></li>
+          <li class="nav__item"><a href="kontakt.html" class="nav__link">Kontakt</a></li>
+          <li class="nav__item nav__cta">
+            <a href="kontakt.html" class="btn--nav">Angebot anfordern</a>
+          </li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <!-- ==================== LINK BUTTONS ==================== -->
+  <main id="main-content">
+    <div class="lp-main">
+      <h1 class="sr-only">Easy2Moove – Kontakt und wichtige Links</h1>
+
+      <!-- Trust strip -->
+      <div class="lp-trust lp-reveal">
+        <div class="lp-trust__item"><i class="fa-solid fa-circle-check"></i> Einzelunternehmen</div>
+        <div class="lp-trust__item"><i class="fa-solid fa-circle-check"></i> Standort Büdingen</div>
+        <div class="lp-trust__item"><i class="fa-solid fa-circle-check"></i> Persönlicher Kontakt</div>
+      </div>
+
+      <!-- ---- JETZT KONTAKT AUFNEHMEN ---- -->
+      <div class="lp-group lp-reveal">
+        <p class="lp-section-label">Direktkontakt</p>
+
+        <a href="https://wa.me/4915567375105?text=Hallo%2C%20ich%20interessiere%20mich%20f%C3%BCr%20Ihre%20Umzugsleistungen."
+           class="lp-btn lp-btn--whatsapp lp-btn--featured"
+           target="_blank" rel="noopener noreferrer"
+           aria-label="WhatsApp Chat öffnen">
+          <span class="lp-btn__icon"><i class="fa-brands fa-whatsapp"></i></span>
+          <span class="lp-btn__text">
+            <span class="lp-btn__title">WhatsApp Chat</span>
+          </span>
+          <i class="fa-solid fa-arrow-right lp-btn__arrow"></i>
+        </a>
+
+        <a href="tel:+4915567375105"
+           class="lp-btn lp-btn--phone lp-btn--featured"
+           aria-label="Jetzt anrufen">
+          <span class="lp-btn__icon"><i class="fa-solid fa-phone"></i></span>
+          <span class="lp-btn__text">
+            <span class="lp-btn__title">Jetzt Anrufen</span>
+          </span>
+          <i class="fa-solid fa-arrow-right lp-btn__arrow"></i>
+        </a>
+
+        <a href="mailto:info@easy2moove.de"
+           class="lp-btn lp-btn--email"
+           aria-label="E-Mail senden">
+          <span class="lp-btn__icon"><i class="fa-solid fa-envelope"></i></span>
+          <span class="lp-btn__text">
+            <span class="lp-btn__label">E-Mail schreiben</span>
+            <span class="lp-btn__title">info@easy2moove.de</span>
+          </span>
+          <i class="fa-solid fa-arrow-right lp-btn__arrow"></i>
+        </a>
+      </div>
+
+      <div class="lp-divider">Online</div>
+
+      <!-- ---- WEBSITE & ANGEBOT ---- -->
+      <div class="lp-group lp-reveal">
+        <p class="lp-section-label">Website & Angebot</p>
+
+        <a href="kontakt.html"
+           class="lp-btn lp-btn--offer lp-btn--featured"
+           aria-label="Unverbindliches Angebot anfragen">
+          <span class="lp-btn__icon"><i class="fa-solid fa-file-invoice"></i></span>
+          <span class="lp-btn__text">
+            <span class="lp-btn__title">Angebot anfordern</span>
+          </span>
+          <i class="fa-solid fa-arrow-right lp-btn__arrow"></i>
+        </a>
+
+        <a href="index.html"
+           class="lp-btn lp-btn--website"
+           aria-label="Zur Hauptwebseite">
+          <span class="lp-btn__icon"><i class="fa-solid fa-globe"></i></span>
+          <span class="lp-btn__text">
+            <span class="lp-btn__tittel">Webseite</span>
+          </span>
+          <i class="fa-solid fa-arrow-right lp-btn__arrow"></i>
+        </a>
+
+        <a href="leistungen.html"
+           class="lp-btn lp-btn--services"
+           aria-label="Alle Leistungen ansehen">
+          <span class="lp-btn__icon"><i class="fa-solid fa-truck-moving"></i></span>
+          <span class="lp-btn__text">
+            <span class="lp-btn__label">Was wir bieten</span>
+            <span class="lp-btn__title">Unsere Leistungen</span>
+          </span>
+          <i class="fa-solid fa-arrow-right lp-btn__arrow"></i>
+        </a>
+      </div>
+
+      <div class="lp-divider">Standort & Bewertungen</div>
+
+      <!-- ---- MAPS & REVIEWS ---- -->
+      <div class="lp-group lp-reveal">
+        <p class="lp-section-label">Google</p>
+
+        <a href="https://www.google.com/maps/search/Easy2Moove+Am+Herrenhöfchen+22+63654+Büdingen"
+           class="lp-btn lp-btn--maps"
+           target="_blank" rel="noopener noreferrer"
+           aria-label="Auf Google Maps ansehen">
+          <span class="lp-btn__icon"><i class="fa-solid fa-map-location-dot"></i></span>
+          <span class="lp-btn__text">
+            <span class="lp-btn__title">Google Maps</span>
+          </span>
+          <i class="fa-solid fa-arrow-right lp-btn__arrow"></i>
+        </a>
+
+        <a href="https://www.google.com/search?q=Easy2Moove+Büdingen&hl=de#lrd=0x0:0x0,1"
+           class="lp-btn lp-btn--reviews"
+           target="_blank" rel="noopener noreferrer"
+           aria-label="Google Bewertungen ansehen">
+          <span class="lp-btn__icon" style="background:rgba(0,0,0,.1);">
+            <i class="fa-brands fa-google" style="color:#1a1a1a;"></i>
+          </span>
+          <span class="lp-btn__text">
+            <span class="lp-btn__title">Google Bewertungen</span>
+          </span>
+          <i class="fa-solid fa-arrow-right lp-btn__arrow" style="color:#1a1a1a; opacity:.4;"></i>
+        </a>
+      </div>
+
+      <div class="lp-divider">Social Media</div>
+
+      <!-- ---- SOCIAL MEDIA ---- -->
+      <div class="lp-group lp-reveal">
+        <p class="lp-section-label">Folge uns</p>
+
+        <a href="https://www.facebook.com/easy2moove"
+           class="lp-btn lp-btn--facebook"
+           target="_blank" rel="noopener noreferrer"
+           aria-label="Facebook Seite besuchen">
+          <span class="lp-btn__icon"><i class="fa-brands fa-facebook-f"></i></span>
+          <span class="lp-btn__text">
+            <span class="lp-btn__title">Facebook</span>
+          </span>
+          <i class="fa-solid fa-arrow-right lp-btn__arrow"></i>
+        </a>
+
+        <a href="https://www.instagram.com/easy2moove"
+           class="lp-btn lp-btn--instagram"
+           target="_blank" rel="noopener noreferrer"
+           aria-label="Instagram Profil besuchen">
+          <span class="lp-btn__icon"><i class="fa-brands fa-instagram"></i></span>
+          <span class="lp-btn__text">
+            <span class="lp-btn__title">Instagram</span>
+          </span>
+          <i class="fa-solid fa-arrow-right lp-btn__arrow"></i>
+        </a>
+
+        <a href="https://www.linkedin.com/company/easy2moove"
+           class="lp-btn lp-btn--linkedin"
+           target="_blank" rel="noopener noreferrer"
+           aria-label="LinkedIn Profil besuchen">
+          <span class="lp-btn__icon"><i class="fa-brands fa-linkedin-in"></i></span>
+          <span class="lp-btn__text">
+            <span class="lp-btn__label">Vernetz dich auf</span>
+            <span class="lp-btn__title">LinkedIn</span>
+          </span>
+          <i class="fa-solid fa-arrow-right lp-btn__arrow"></i>
+        </a>
+      </div>
+
+    </div><!-- /lp-main -->
+  </main>
+
+  <!-- ==================== FOOTER ==================== -->
+  <footer class="lp-footer" role="contentinfo">
+    <nav class="lp-footer__links" aria-label="Footer Navigation">
+      <a href="index.html">Startseite</a>
+      <a href="impressum.html">Impressum</a>
+      <a href="datenschutz.html">Datenschutz</a>
+      <a href="kontakt.html">Kontakt</a>
+    </nav>
+    <p class="lp-footer__copy">&copy; 2026 Easy2Moove – Einzelunternehmen. Alle Rechte vorbehalten.</p>
+  </footer>
+
+  <!-- Back to top -->
+  <button class="back-to-top" id="backToTop" aria-label="Nach oben scrollen">
+    <i class="fa-solid fa-chevron-up"></i>
+  </button>
+
+  <script>
+    /* ---- Hamburger menu ---- */
+    const toggle = document.querySelector('.nav__toggle');
+    const nav    = document.querySelector('#main-nav');
+
+    toggle.addEventListener('click', () => {
+      const isOpen = toggle.getAttribute('aria-expanded') === 'true';
+      toggle.setAttribute('aria-expanded', String(!isOpen));
+      nav.classList.toggle('nav--open', !isOpen);
+    });
+
+    /* ---- Dropdown on mobile (tap) ---- */
+    document.querySelectorAll('.nav__item--has-dropdown > .nav__link').forEach(link => {
+      link.addEventListener('click', e => {
+        if (window.innerWidth < 1024) {
+          e.preventDefault();
+          link.closest('.nav__item').classList.toggle('nav__item--open');
+        }
+      });
+    });
+
+    /* ---- Scroll-reveal for link groups ---- */
+    const revealEls = document.querySelectorAll('.lp-reveal');
+    const observer  = new IntersectionObserver(entries => {
+      entries.forEach((entry, i) => {
+        if (entry.isIntersecting) {
+          entry.target.style.transitionDelay = (i * 0.07) + 's';
+          entry.target.classList.add('visible');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.1 });
+    revealEls.forEach(el => observer.observe(el));
+
+    /* ---- Back to top ---- */
+    const btn = document.getElementById('backToTop');
+    window.addEventListener('scroll', () => {
+      btn.classList.toggle('visible', window.scrollY > 300);
+    }, { passive: true });
+    btn.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+
+    /* ---- Sticky navbar background on scroll ---- */
+    const header = document.querySelector('.header');
+    window.addEventListener('scroll', () => {
+      header.classList.toggle('header--scrolled', window.scrollY > 20);
+    }, { passive: true });
+  </script>
+</body>
+</html>
