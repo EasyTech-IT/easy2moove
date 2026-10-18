@@ -89,12 +89,23 @@
 
 <section class="hero hero--home" aria-labelledby="home-hero-title">
 
-  <!-- Hintergrundbild -->
+  <!-- Dekoratives Hintergrundvideo; das Poster dient als Standbild-Fallback. -->
   <div
     class="hero__bg hero__bg--home"
-    role="img"
-    aria-label="Transporter von Easy2Moove auf dem Weg zum Kunden"
-  ></div>
+    aria-hidden="true"
+  >
+    <video
+      class="hero__video"
+      autoplay
+      muted
+      loop
+      playsinline
+      preload="metadata"
+      poster="img/Easy2Moove vor Frankfurter Skyline (1).png"
+    >
+      <source src="img/video.mp4" type="video/mp4">
+    </video>
+  </div>
 
   <!-- Dunkles Overlay für bessere Textlesbarkeit -->
   <div class="hero__overlay" aria-hidden="true"></div>

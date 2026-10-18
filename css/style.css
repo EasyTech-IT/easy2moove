@@ -495,6 +495,15 @@ p {
   animation: heroImageReveal 1.2s ease-out both;
 }
 
+.hero--home .hero__video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center 55%;
+}
+
 /* ---------- 3. Bild-Overlay ---------- */
 
 .hero--home .hero__overlay {
@@ -919,6 +928,10 @@ p {
   .hero--home .hero__bg {
     background-image: url("../img/Easy2Moove vor Frankfurter Skyline.png");
     background-position: 72% center;
+  }
+
+  .hero--home .hero__video {
+    object-position: 72% center;
   }
 
   .hero--home .hero__overlay {
