@@ -4,6 +4,42 @@
    ========================================================================== */
 
 document.addEventListener("DOMContentLoaded", () => {
+  /* ---------- Responsive homepage hero video ---------- */
+  const heroVideo = document.querySelector(".hero__video");
+
+  if (heroVideo) {
+    const mobileQuery = window.matchMedia("(max-width: 600px)");
+    const reducedMotionQuery = window.matchMedia(
+      "(prefers-reduced-motion: reduce)",
+    );
+
+    const updateHeroVideo = () => {
+      if (reducedMotionQuery.matches) {
+        heroVideo.autoplay = false;
+        heroVideo.pause();
+        heroVideo.removeAttribute("src");
+        delete heroVideo.dataset.activeSource;
+        heroVideo.load();
+        return;
+      }
+
+      const source = mobileQuery.matches
+        ? heroVideo.dataset.mobileSrc
+        : heroVideo.dataset.desktopSrc;
+
+      if (!source || heroVideo.dataset.activeSource === source) return;
+
+      heroVideo.dataset.activeSource = source;
+      heroVideo.autoplay = true;
+      heroVideo.src = source;
+      heroVideo.load();
+    };
+
+    updateHeroVideo();
+    mobileQuery.addEventListener("change", updateHeroVideo);
+    reducedMotionQuery.addEventListener("change", updateHeroVideo);
+  }
+
   /* ---------- Flip Cards (mobile tap) ---------- */
   document.querySelectorAll(".flip-card").forEach((card) => {
     card.addEventListener("click", () => {
