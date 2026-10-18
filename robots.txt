@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://www.easy2moove.de/sitemap.xml
+Sitemap: https://easy2moove.de/sitemap.xml
