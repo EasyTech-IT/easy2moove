@@ -20,7 +20,9 @@ jobs:
         uses: actions/checkout@v4
 
       - name: SFTP-Client installieren
-        run: sudo apt-get update && sudo apt-get install -y lftp
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y lftp
 
       - name: Dateien zu IONOS übertragen
         env:
@@ -29,6 +31,13 @@ jobs:
           SFTP_PASSWORD: ${{ secrets.FTP_PASSWORD }}
           SFTP_PORT: ${{ secrets.FTP_PORT }}
         run: |
+          set -euo pipefail
+
+          test -n "$SFTP_HOST" || { echo "GitHub Secret FTP_SERVER fehlt."; exit 1; }
+          test -n "$SFTP_USER" || { echo "GitHub Secret FTP_USERNAME fehlt."; exit 1; }
+          test -n "$SFTP_PASSWORD" || { echo "GitHub Secret FTP_PASSWORD fehlt."; exit 1; }
+          test -n "$SFTP_PORT" || { echo "GitHub Secret FTP_PORT fehlt."; exit 1; }
+
           lftp -u "$SFTP_USER","$SFTP_PASSWORD" \
             "sftp://$SFTP_HOST:$SFTP_PORT" \
-            -e "set sftp:auto-confirm yes; pwd; ls; bye"
+            -e "set sftp:auto-confirm yes; mirror --reverse --verbose --exclude-glob .git/ --exclude-glob .github/ --exclude-glob .vscode/ ./ /public/; bye"
