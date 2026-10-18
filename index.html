@@ -6,7 +6,12 @@
   <title>Easy2Moove – Umzüge &amp; Transporte in der Wetterau</title>
   <meta name="description" content="Easy2Moove unterstützt bei Umzügen, Transporten und Transporter-Vermietung in der Wetterau und im Main-Kinzig-Kreis. Leistungen und Termine unverbindlich anfragen.">
   <meta name="keywords" content="Umzug deutschlandweit, Transport Deutschland, Transporter mieten, Umzugsunternehmen, Möbeltransport">
-  <link rel="canonical" href="https://www.easy2moove.de/">
+  <link rel="canonical" href="https://easy2moove.de/">
+  <script>
+    if (window.location.pathname === "/index.html") {
+      window.location.replace(`/${window.location.search}${window.location.hash}`);
+    }
+  </script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -14,7 +19,7 @@
   <script type="application/ld+json">
   {
     "@context":"https://schema.org","@type":"LocalBusiness","name":"Easy2Moove",
-    "url":"https://www.easy2moove.de","telephone":"+49-155-67375105","email":"info@easy2moove.de",
+    "url":"https://easy2moove.de","telephone":"+49-155-67375105","email":"info@easy2moove.de",
     "address":{"@type":"PostalAddress","streetAddress":"Am Herrenhöfchen 22","addressLocality":"Büdingen","postalCode":"63654","addressCountry":"DE"},
     "areaServed":["Wetteraukreis","Main-Kinzig-Kreis"]
   }
@@ -25,13 +30,13 @@
   <!-- ==================== FLOATING NAVBAR ==================== -->
   <header class="header" role="banner">
     <div class="header__island">
-      <a href="index.html" class="header__logo" aria-label="Easy2Moove Startseite">
+      <a href="/" class="header__logo" aria-label="Easy2Moove Startseite">
         <img src="img/logo-nav.png" alt="Easy2Moove – Transport & Vermietung" height="36">
       </a>
       <button class="nav__toggle" aria-label="Menü öffnen" aria-expanded="false" aria-controls="main-nav"><span></span><span></span><span></span></button>
       <nav class="nav" id="main-nav" aria-label="Hauptnavigation">
         <ul class="nav__list">
-          <li class="nav__item"><a href="index.html" class="nav__link nav__link--active">Home</a></li>
+          <li class="nav__item"><a href="/" class="nav__link nav__link--active">Home</a></li>
           <li class="nav__item nav__item--has-dropdown">
             <a href="leistungen.html" class="nav__link">Leistungen</a>
             <ul class="nav__dropdown">
