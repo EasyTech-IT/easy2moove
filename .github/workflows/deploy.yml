@@ -1,22 +1,29 @@
-name: Deploy to IONOS via FTP
+
+name: Deploy Website to IONOS
 
 on:
   push:
     branches:
       - main
+  workflow_dispatch:
+
+permissions:
+  contents: read
 
 jobs:
-  web-deploy:
-    name: Deploy
+  deploy:
     runs-on: ubuntu-latest
+
     steps:
-      - name: Get latest code
+      - name: Repository herunterladen
         uses: actions/checkout@v4
 
-      - name: Sync files via FTP
-uses: samkirsch/ftp-deploy-action@v4.3.5
-with:
-          server: ${{ secrets.FTP_SERVER }}
-          username: ${{ secrets.FTP_USERNAME }}
+      - name: Dateien per SSH übertragen
+        uses: appleboy/scp-action@v1
+        with:
+          host: access-5020127420.webspace-host.com
+          username: su1796601
           password: ${{ secrets.FTP_PASSWORD }}
-          server-dir: /
+          port: 22
+          source: "./*"
+          target: "/DEIN-ZIELORDNER/"
