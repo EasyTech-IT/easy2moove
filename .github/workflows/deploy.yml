@@ -12,18 +12,23 @@ permissions:
 
 jobs:
   deploy:
+    name: SFTP Deployment
     runs-on: ubuntu-latest
 
     steps:
       - name: Repository herunterladen
         uses: actions/checkout@v4
 
-      - name: Dateien per SSH übertragen
-        uses: appleboy/scp-action@v1
-        with:
-          host: access-5020127420.webspace-host.com
-          username: su1796601
-          password: ${{ secrets.FTP_PASSWORD }}
-          port: 22
-          source: "./*"
-          target: "/DEIN-ZIELORDNER/"
+      - name: SFTP-Client installieren
+        run: sudo apt-get update && sudo apt-get install -y lftp
+
+      - name: Dateien zu IONOS übertragen
+        env:
+          SFTP_HOST: ${{ secrets.FTP_SERVER }}
+          SFTP_USER: ${{ secrets.FTP_USERNAME }}
+          SFTP_PASSWORD: ${{ secrets.FTP_PASSWORD }}
+          SFTP_PORT: ${{ secrets.FTP_PORT }}
+        run: |
+          lftp -u "$SFTP_USER","$SFTP_PASSWORD" \
+            "sftp://$SFTP_HOST:$SFTP_PORT" \
+            -e "set sftp:auto-confirm yes; pwd; ls; bye"
