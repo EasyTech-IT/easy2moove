@@ -24,6 +24,19 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y lftp
 
+      - name: IONOS-Webordner ermitteln
+        env:
+          SFTP_HOST: ${{ secrets.FTP_SERVER }}
+          SFTP_USER: ${{ secrets.FTP_USERNAME }}
+          SFTP_PASSWORD: ${{ secrets.FTP_PASSWORD }}
+          SFTP_PORT: ${{ secrets.FTP_PORT }}
+        run: |
+          set -euo pipefail
+
+          lftp -u "$SFTP_USER","$SFTP_PASSWORD" \
+            "sftp://$SFTP_HOST:$SFTP_PORT" \
+            -e "set sftp:auto-confirm yes; pwd; cls -la /; cls -la .; cls -la /public; cls -la /htdocs; cls -la /public_html; bye"
+
       - name: Dateien zu IONOS übertragen
         env:
           SFTP_HOST: ${{ secrets.FTP_SERVER }}
