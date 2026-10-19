@@ -231,19 +231,41 @@ document.addEventListener("DOMContentLoaded", () => {
   /* ---------- DSGVO Consent Banner ---------- */
   const banner = document.querySelector(".consent-banner");
   if (banner) {
-    if (!localStorage.getItem("consent_accepted")) {
+    const bannerText = banner.querySelector(".consent-banner__text");
+    const bannerLink = bannerText?.querySelector("a");
+    if (bannerText) {
+      const heading = document.createElement("h2");
+      heading.className = "consent-banner__title";
+      heading.textContent = "Ihre Privatsphäre ist uns wichtig";
+      banner.querySelector(".consent-banner__inner")?.prepend(heading);
+      bannerText.replaceChildren(
+        "Wir setzen keine Analyse- oder Marketing-Cookies ein. Nur Ihre Auswahl, diesen Hinweis zu schließen, speichern wir lokal, damit er nicht erneut erscheint.",
+      );
+      if (bannerLink) {
+        bannerText.append(" ", bannerLink);
+      }
+    }
+
+    banner.setAttribute("role", "region");
+    banner.setAttribute("aria-label", "Datenschutzhinweis");
+
+    if (
+      localStorage.getItem("privacy_notice_dismissed") !== "true" &&
+      localStorage.getItem("consent_accepted") === null
+    ) {
       banner.classList.add("consent-banner--visible");
     }
-    const acceptBtn = banner.querySelector('[data-consent="accept"]');
-    const declineBtn = banner.querySelector('[data-consent="decline"]');
+    const dismissBtn = banner.querySelector('[data-consent="accept"]');
+    banner.querySelector('[data-consent="decline"]')?.remove();
+    if (dismissBtn) {
+      dismissBtn.setAttribute("data-consent", "dismiss");
+      dismissBtn.textContent = "Alles klar";
+      dismissBtn.setAttribute("aria-label", "Datenschutzhinweis schließen");
+    }
 
-    [acceptBtn, declineBtn].forEach((button) => {
-      if (button) {
-        button.addEventListener("click", () => {
-          localStorage.setItem("consent_accepted", "shown");
-          banner.classList.remove("consent-banner--visible");
-        });
-      }
+    dismissBtn?.addEventListener("click", () => {
+      localStorage.setItem("privacy_notice_dismissed", "true");
+      banner.classList.remove("consent-banner--visible");
     });
   }
 
