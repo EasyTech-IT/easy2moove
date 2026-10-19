@@ -19,6 +19,12 @@ jobs:
       - name: Repository herunterladen
         uses: actions/checkout@v4
 
+      - name: Asset-URLs für diesen Stand versionieren
+        run: |
+          find . -type f -name '*.html' -not -path './.git/*' -exec sed -i \
+            -e "s#style\\.css\"#style.css?v=${GITHUB_SHA}\"#g" \
+            -e "s#main\\.js\"#main.js?v=${GITHUB_SHA}\"#g" {} +
+
       - name: SFTP-Client installieren
         run: |
           sudo apt-get update
@@ -53,14 +59,14 @@ jobs:
 
           curl --fail --silent --show-error --retry 5 --retry-delay 2 \
             --output "$verify_dir/style.css" \
-            "https://easy2moove.de/css/style.css?deploy=$DEPLOY_SHA" \
+            "https://easy2moove.de/css/style.css?v=$DEPLOY_SHA" \
             || { echo "Die Hero-CSS ist auf der Live-Website nicht abrufbar."; exit 1; }
           grep -Fq '.hero:not(.hero--home):not(.leistungen-hero)' "$verify_dir/style.css" \
             || { echo "Die neue Hero-CSS ist nicht auf der Live-Website angekommen."; exit 1; }
 
           curl --fail --silent --show-error --retry 5 --retry-delay 2 \
             --output "$verify_dir/main.js" \
-            "https://easy2moove.de/js/main.js?deploy=$DEPLOY_SHA" \
+            "https://easy2moove.de/js/main.js?v=$DEPLOY_SHA" \
             || { echo "Das JavaScript ist auf der Live-Website nicht abrufbar."; exit 1; }
           grep -Fq 'privacy_notice_dismissed' "$verify_dir/main.js" \
             || { echo "Das neue JavaScript ist nicht auf der Live-Website angekommen."; exit 1; }
@@ -68,3 +74,9 @@ jobs:
           curl --fail --silent --show-error --retry 5 --retry-delay 2 \
             --output /dev/null \
             "https://easy2moove.de/img/video.mp4?deploy=$DEPLOY_SHA"
+
+          curl --fail --silent --show-error --retry 5 --retry-delay 2 \
+            --output "$verify_dir/ueber-uns.html" \
+            "https://easy2moove.de/ueber-uns.html?deploy=$DEPLOY_SHA"
+          grep -Fq "css/style.css?v=$DEPLOY_SHA" "$verify_dir/ueber-uns.html" \
+            || { echo "Die veröffentlichte Seite verwendet nicht die versionsgekennzeichnete CSS-Datei."; exit 1; }
