@@ -24,19 +24,6 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y lftp
 
-      - name: IONOS-Webordner ermitteln
-        env:
-          SFTP_HOST: ${{ secrets.FTP_SERVER }}
-          SFTP_USER: ${{ secrets.FTP_USERNAME }}
-          SFTP_PASSWORD: ${{ secrets.FTP_PASSWORD }}
-          SFTP_PORT: ${{ secrets.FTP_PORT }}
-        run: |
-          set -euo pipefail
-
-          lftp -u "$SFTP_USER","$SFTP_PASSWORD" \
-            "sftp://$SFTP_HOST:$SFTP_PORT" \
-            -e "set sftp:auto-confirm yes; pwd; cls -la /; cls -la .; cls -la /public; cls -la /htdocs; cls -la /public_html; bye"
-
       - name: Dateien zu IONOS übertragen
         env:
           SFTP_HOST: ${{ secrets.FTP_SERVER }}
@@ -53,4 +40,24 @@ jobs:
 
           lftp -u "$SFTP_USER","$SFTP_PASSWORD" \
             "sftp://$SFTP_HOST:$SFTP_PORT" \
-            -e "set sftp:auto-confirm yes; mirror --reverse --verbose --exclude-glob .git/ --exclude-glob .github/ --exclude-glob .vscode/ ./ /public/; bye"
+            -e "set sftp:auto-confirm yes; mirror --reverse --verbose --exclude-glob .git/ --exclude-glob .github/ --exclude-glob .vscode/ ./ /; bye"
+
+      - name: Live-Deployment prüfen
+        env:
+          DEPLOY_SHA: ${{ github.sha }}
+        run: |
+          set -euo pipefail
+
+          curl --fail --silent --show-error --retry 5 --retry-delay 2 \
+            "https://easy2moove.de/css/style.css?deploy=$DEPLOY_SHA" \
+            | grep -Fq '.hero:not(.hero--home):not(.leistungen-hero)' \
+            || { echo "Die neue Hero-CSS ist auf der Live-Website nicht erreichbar."; exit 1; }
+
+          curl --fail --silent --show-error --retry 5 --retry-delay 2 \
+            "https://easy2moove.de/js/main.js?deploy=$DEPLOY_SHA" \
+            | grep -Fq 'privacy_notice_dismissed' \
+            || { echo "Das neue JavaScript ist auf der Live-Website nicht erreichbar."; exit 1; }
+
+          curl --fail --silent --show-error --retry 5 --retry-delay 2 \
+            --output /dev/null \
+            "https://easy2moove.de/img/video.mp4?deploy=$DEPLOY_SHA"
