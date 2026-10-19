@@ -48,15 +48,22 @@ jobs:
         run: |
           set -euo pipefail
 
-          curl --fail --silent --show-error --retry 5 --retry-delay 2 \
-            "https://easy2moove.de/css/style.css?deploy=$DEPLOY_SHA" \
-            | grep -Fq '.hero:not(.hero--home):not(.leistungen-hero)' \
-            || { echo "Die neue Hero-CSS ist auf der Live-Website nicht erreichbar."; exit 1; }
+          verify_dir="$(mktemp -d)"
+          trap 'rm -rf "$verify_dir"' EXIT
 
           curl --fail --silent --show-error --retry 5 --retry-delay 2 \
+            --output "$verify_dir/style.css" \
+            "https://easy2moove.de/css/style.css?deploy=$DEPLOY_SHA" \
+            || { echo "Die Hero-CSS ist auf der Live-Website nicht abrufbar."; exit 1; }
+          grep -Fq '.hero:not(.hero--home):not(.leistungen-hero)' "$verify_dir/style.css" \
+            || { echo "Die neue Hero-CSS ist nicht auf der Live-Website angekommen."; exit 1; }
+
+          curl --fail --silent --show-error --retry 5 --retry-delay 2 \
+            --output "$verify_dir/main.js" \
             "https://easy2moove.de/js/main.js?deploy=$DEPLOY_SHA" \
-            | grep -Fq 'privacy_notice_dismissed' \
-            || { echo "Das neue JavaScript ist auf der Live-Website nicht erreichbar."; exit 1; }
+            || { echo "Das JavaScript ist auf der Live-Website nicht abrufbar."; exit 1; }
+          grep -Fq 'privacy_notice_dismissed' "$verify_dir/main.js" \
+            || { echo "Das neue JavaScript ist nicht auf der Live-Website angekommen."; exit 1; }
 
           curl --fail --silent --show-error --retry 5 --retry-delay 2 \
             --output /dev/null \
