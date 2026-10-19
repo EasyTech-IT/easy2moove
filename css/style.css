@@ -4690,3 +4690,87 @@ img.loaded {
     padding: 1.25rem;
   }
 }
+
+/* Shared hero layout for all pages except the custom homepage hero. */
+.hero:not(.hero--home):not(.leistungen-hero) {
+  position: relative;
+  isolation: isolate;
+  display: flex;
+  align-items: center;
+  min-height: clamp(420px, 58vh, 620px);
+  overflow: hidden;
+  padding: 136px 0 72px;
+  background: #101512;
+  color: var(--white);
+}
+
+.hero:not(.hero--home):not(.leistungen-hero)::after {
+  position: absolute;
+  z-index: -1;
+  inset: 0;
+  background: linear-gradient(
+    90deg,
+    rgba(8, 18, 13, 0.88) 0%,
+    rgba(8, 18, 13, 0.68) 55%,
+    rgba(8, 18, 13, 0.32) 100%
+  );
+  content: "";
+}
+
+.hero:not(.hero--home):not(.leistungen-hero) .hero__bg {
+  position: absolute;
+  z-index: -2;
+  inset: 0;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+.hero:not(.hero--home):not(.leistungen-hero) .hero__content {
+  position: relative;
+  z-index: 1;
+  width: 90%;
+  max-width: var(--max-width);
+  margin: 0 auto;
+}
+
+.hero:not(.hero--home):not(.leistungen-hero) h1 {
+  max-width: 850px;
+  margin-bottom: 1rem;
+  color: var(--white);
+  font-size: clamp(2.25rem, 5.5vw, 4rem);
+  letter-spacing: -0.045em;
+}
+
+.hero:not(.hero--home):not(.leistungen-hero) h1 .highlight {
+  color: #79e6b0;
+}
+
+.hero:not(.hero--home):not(.leistungen-hero) .hero__content > p {
+  max-width: 760px;
+  margin-bottom: 1.5rem;
+  color: rgba(255, 255, 255, 0.9);
+  font-size: clamp(1rem, 2vw, 1.2rem);
+  line-height: 1.75;
+}
+
+.hero:not(.hero--home):not(.leistungen-hero) .hero__buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.8rem;
+}
+
+@media (max-width: 600px) {
+  .hero:not(.hero--home):not(.leistungen-hero) {
+    min-height: 400px;
+    padding: 116px 0 56px;
+  }
+
+  .hero:not(.hero--home):not(.leistungen-hero)::after {
+    background: linear-gradient(
+      90deg,
+      rgba(8, 18, 13, 0.84) 0%,
+      rgba(8, 18, 13, 0.64) 100%
+    );
+  }
+}
