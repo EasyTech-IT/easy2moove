@@ -4836,3 +4836,21 @@ img.loaded {
     );
   }
 }
+
+/* Kontaktformular: Umzugsangaben & Status */
+.form__move { border: 1px solid var(--border, #e5e7eb); border-radius: 12px; padding: 1rem 1.25rem; margin: 0 0 1.25rem; background: rgba(245, 158, 11, 0.06); }
+.form__move legend { padding: 0 .5rem; font-weight: 600; }
+.form__move[hidden], .form__status[hidden] { display: none; }
+.form__hp { position: absolute; left: -9999px; width: 1px; height: 1px; overflow: hidden; }
+.form__status { margin-top: 1rem; padding: .85rem 1rem; border-radius: 10px; font-weight: 500; }
+.form__status--ok { background: #ecfdf5; color: #065f46; border: 1px solid #a7f3d0; }
+.form__status--error { background: #fef2f2; color: #991b1b; border: 1px solid #fecaca; }
+.form__consent + .form__error { margin-top: .25rem; }
+
+.form__choices { display: flex; flex-wrap: wrap; gap: .6rem; }
+.form__choice { display: inline-flex; align-items: center; gap: .45rem; padding: .6rem 1rem; border: 1.5px solid #d1d5db; border-radius: 999px; cursor: pointer; font-weight: 500; transition: border-color .15s, background .15s; }
+.form__choice:hover, .form__choice:has(input:checked) { border-color: #f59e0b; background: rgba(245, 158, 11, 0.1); }
+.form__choice input { accent-color: #f59e0b; }
+.form__wa { margin-top: 1rem; }
+.btn--whatsapp { background: #25d366; color: #fff; border: 0; }
+.btn--whatsapp:hover { background: #1ebe5b; color: #fff; }

@@ -66,48 +66,86 @@
         <div class="grid grid--2">
           <div>
             <h2 id="contact-form-title">Individuelles <span class="highlight">Angebot</span> anfordern</h2>
-            <form class="form" id="contact-form" data-validate data-mailto-recipient="info@easy2moove.de" novalidate>
+            <form class="form" id="contact-form" data-validate data-endpoint="kontakt-senden.php" method="post" novalidate>
+              <div class="form__group">
+                <label class="form__label" for="service">Gewünschte Leistung <span class="required">*</span></label>
+                <select class="form__select" id="service" name="service" required>
+                  <option value="">Bitte wählen...</option>
+                  <option value="umzug">Umzug</option>
+                  <option value="firmenumzug">Firmenumzug</option>
+                  <option value="entruempelung">Entrümpelung</option>
+                  <option value="moebelmontage">Möbelmontage</option>
+                  <option value="lagerung">Lagerung</option>
+                  <option value="transporter">Transporter mieten</option>
+                  <option value="sonstiges">Sonstiges</option>
+                </select>
+                <div class="form__error">Bitte wählen Sie eine Leistung.</div>
+              </div>
               <div class="form__row">
                 <div class="form__group">
                   <label class="form__label" for="name">Name <span class="required">*</span></label>
-                  <input class="form__input" type="text" id="name" name="name" required autocomplete="name">
+                  <input class="form__input" type="text" id="name" name="name" required maxlength="100" autocomplete="name">
                   <div class="form__error">Bitte geben Sie Ihren Namen ein.</div>
                 </div>
                 <div class="form__group">
-                  <label class="form__label" for="email">E-Mail <span class="required">*</span></label>
-                  <input class="form__input" type="email" id="email" name="email" required autocomplete="email">
-                  <div class="form__error">Bitte geben Sie eine gültige E-Mail-Adresse ein.</div>
-                </div>
-              </div>
-              <div class="form__row">
-                <div class="form__group">
-                  <label class="form__label" for="phone">Telefon</label>
-                  <input class="form__input" type="tel" id="phone" name="phone" autocomplete="tel">
-                </div>
-                <div class="form__group">
-                  <label class="form__label" for="service">Gewünschte Leistung</label>
-                  <select class="form__select" id="service" name="service">
-                    <option value="">Bitte wählen...</option>
-                    <option value="umzug">Umzug</option>
-                    <option value="transporter">Transporter mieten</option>
-                    <option value="spezialtransport">Spezialtransport</option>
-                    <option value="sonstiges">Sonstiges</option>
-                  </select>
+                  <label class="form__label" for="phone">Telefonnummer <span class="required">*</span></label>
+                  <input class="form__input" type="tel" id="phone" name="phone" required maxlength="40" autocomplete="tel">
+                  <div class="form__error">Bitte geben Sie eine gültige Telefonnummer ein.</div>
                 </div>
               </div>
               <div class="form__group">
+                <label class="form__label" for="email">E-Mail-Adresse <span class="required">*</span></label>
+                <input class="form__input" type="email" id="email" name="email" required maxlength="150" autocomplete="email">
+                <div class="form__error">Bitte geben Sie eine gültige E-Mail-Adresse ein.</div>
+              </div>
+              <fieldset class="form__move" id="move-fields" hidden>
+                <legend>Angaben zum Umzug</legend>
+                <div class="form__row">
+                  <div class="form__group">
+                    <label class="form__label" for="move_from">Von (Auszugsadresse/Ort) <span class="required">*</span></label>
+                    <input class="form__input" type="text" id="move_from" name="move_from" maxlength="200" autocomplete="off" placeholder="z. B. Büdingen">
+                    <div class="form__error">Bitte geben Sie den Auszugsort an.</div>
+                  </div>
+                  <div class="form__group">
+                    <label class="form__label" for="move_to">Nach (Einzugsadresse/Ort) <span class="required">*</span></label>
+                    <input class="form__input" type="text" id="move_to" name="move_to" maxlength="200" autocomplete="off" placeholder="z. B. Frankfurt am Main">
+                    <div class="form__error">Bitte geben Sie den Einzugsort an.</div>
+                  </div>
+                </div>
+              </fieldset>
+              <div class="form__group">
+                <label class="form__label" for="move_date"><span id="date-label">Wunschtermin</span> <span class="required" id="date-req" hidden>*</span></label>
+                <input class="form__input" type="date" id="move_date" name="move_date">
+                <div class="form__error">Bitte wählen Sie ein gültiges Datum.</div>
+              </div>
+              <div class="form__group">
+                <span class="form__label" id="contact-pref-label">Wie möchten Sie kontaktiert werden? <span class="required">*</span></span>
+                <div class="form__choices" role="radiogroup" aria-labelledby="contact-pref-label">
+                  <label class="form__choice"><input type="radio" name="contact_pref" value="whatsapp" required> <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 11.5a8.4 8.4 0 0 1-12.4 7.400L3 21l1.900-5.400A8.500 8.500 0 1 1 21 11.500z"/></svg> WhatsApp</label>
+                  <label class="form__choice"><input type="radio" name="contact_pref" value="anruf" required> <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92z"/></svg> Anruf</label>
+                  <label class="form__choice"><input type="radio" name="contact_pref" value="email" required> <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4h16a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2z"/><polyline points="22,6 12,13 2,6"/></svg> E-Mail</label>
+                </div>
+                <div class="form__error">Bitte wählen Sie einen Kontaktweg.</div>
+              </div>              <div class="form__group">
                 <label class="form__label" for="message">Nachricht <span class="required">*</span></label>
-                <textarea class="form__textarea" id="message" name="message" required placeholder="Beschreiben Sie kurz Ihr Vorhaben..."></textarea>
+                <textarea class="form__textarea" id="message" name="message" required maxlength="3000" placeholder="Beschreiben Sie kurz Ihr Vorhaben..."></textarea>
                 <div class="form__error">Bitte beschreiben Sie Ihr Anliegen.</div>
               </div>
+              <div class="form__hp" aria-hidden="true">
+                <label>Webseite <input type="text" name="website" tabindex="-1" autocomplete="off"></label>
+              </div>
+              <input type="hidden" name="ts" value="">
               <div class="form__group">
                 <label class="form__consent">
-                  <input type="checkbox" name="consent" required>
-                  Ich stimme der Verarbeitung meiner Daten gemäß der <a href="datenschutz.html">Datenschutzerklärung</a> zu. <span class="required">*</span>
+                  <input type="checkbox" name="consent" value="1" required>
+                  Ich habe die <a href="datenschutz.html" target="_blank" rel="noopener">Datenschutzerklärung</a> gelesen und stimme der Verarbeitung meiner Daten zur Bearbeitung meiner Anfrage zu. <span class="required">*</span>
                 </label>
+                <div class="form__error">Bitte stimmen Sie der Datenschutzerklärung zu.</div>
               </div>
               <button type="submit" class="btn btn--primary">Anfrage absenden</button>
-              <p class="text-muted text-sm mt-1">Beim Absenden öffnet sich Ihr E-Mail-Programm mit den eingetragenen Angaben. Die Nachricht wird erst versendet, wenn Sie sie dort bestätigen.</p>
+              <p class="form__wa">Lieber direkt schreiben? <a class="btn btn--whatsapp" href="https://wa.me/4915567375105?text=Hallo%20Easy2Moove%2C%20ich%20habe%20eine%20Anfrage." target="_blank" rel="noopener">💬 Direkt per WhatsApp chatten</a></p>
+              <div class="form__status" id="form-status" role="status" aria-live="polite" hidden></div>
+              <p class="text-muted text-sm mt-1">Sie erhalten eine Bestätigung per E-Mail. Ihre Daten werden ausschließlich zur Bearbeitung Ihrer Anfrage verwendet.</p>
             </form>
           </div>
           <div>

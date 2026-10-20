@@ -1,4 +1,4 @@
-﻿/* ==========================================================================
+/* ==========================================================================
    Easy2Moove Logistik – JavaScript
    Navigation, FAQ-Akkordeon, Form-Validierung, Consent, Lazy-Load, Back-to-top
    ========================================================================== */
@@ -93,6 +93,7 @@ document.addEventListener("DOMContentLoaded", () => {
     form.addEventListener("submit", (e) => {
       let valid = true;
       const mailtoRecipient = form.dataset.mailtoRecipient;
+      const endpoint = form.dataset.endpoint;
 
       // Reset errors
       form
@@ -102,6 +103,7 @@ document.addEventListener("DOMContentLoaded", () => {
       // Required fields
       form.querySelectorAll("[required]").forEach((field) => {
         const group = field.closest(".form__group");
+        if (field.type === "radio") return;
         if (!field.value.trim()) {
           valid = false;
           if (group) group.classList.add("form__group--error");
@@ -117,6 +119,33 @@ document.addEventListener("DOMContentLoaded", () => {
           if (group) group.classList.add("form__group--error");
         }
       });
+
+      // Kontaktweg (Radio-Gruppe)
+      const radios = form.querySelectorAll('input[type="radio"][required]');
+      if (radios.length && !form.querySelector('input[type="radio"]:checked')) {
+        valid = false;
+        radios[0].closest(".form__group").classList.add("form__group--error");
+      }
+
+      // Telefonnummer
+      form.querySelectorAll('input[type="tel"][required]').forEach((tel) => {
+        const group = tel.closest(".form__group");
+        if (tel.value && !/^\+?[0-9 ()\/\-]{6,25}$/.test(tel.value.trim())) {
+          valid = false;
+          if (group) group.classList.add("form__group--error");
+        }
+      });
+
+      // Umzugsdatum nicht in der Vergangenheit
+      const dateField = form.querySelector("#move_date");
+      if (dateField && dateField.value) {
+        const today = new Date();
+        today.setHours(0, 0, 0, 0);
+        if (new Date(dateField.value) < today) {
+          valid = false;
+          dateField.closest(".form__group").classList.add("form__group--error");
+        }
+      }
 
       // Consent checkbox
       form
@@ -137,6 +166,12 @@ document.addEventListener("DOMContentLoaded", () => {
         return;
       }
 
+      if (endpoint) {
+        e.preventDefault();
+        submitForm(form, endpoint);
+        return;
+      }
+
       if (mailtoRecipient) {
         e.preventDefault();
 
@@ -150,7 +185,6 @@ document.addEventListener("DOMContentLoaded", () => {
         window.location.href = `mailto:${encodeURIComponent(mailtoRecipient)}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
       }
     });
-
     // Live reset on input
     form.addEventListener("input", (e) => {
       const group = e.target.closest(".form__group");
@@ -158,6 +192,68 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   });
 
+  /* ---------- Umzugsfelder & Versand ---------- */
+  const moveFieldset = document.getElementById("move-fields");
+  const serviceSelect = document.getElementById("service");
+  if (moveFieldset && serviceSelect) {
+    const moveInputs = moveFieldset.querySelectorAll("input");
+    const dateInput = document.getElementById("move_date");
+    if (dateInput) dateInput.min = new Date().toISOString().slice(0, 10);
+    const toggleMove = () => {
+      const isMove = ["umzug", "firmenumzug"].includes(serviceSelect.value);
+      moveFieldset.hidden = !isMove;
+      moveInputs.forEach((i) => (i.required = isMove));
+      if (dateInput) dateInput.required = isMove;
+      const dateReq = document.getElementById("date-req");
+      const dateLabel = document.getElementById("date-label");
+      if (dateReq) dateReq.hidden = !isMove;
+      if (dateLabel) dateLabel.textContent = isMove ? "Umzugsdatum" : "Wunschtermin";
+    };
+    serviceSelect.addEventListener("change", toggleMove);
+    toggleMove();
+    const params = new URLSearchParams(window.location.search);
+    if (params.get("leistung") && serviceSelect.querySelector(`option[value="${params.get("leistung")}"]`)) {
+      serviceSelect.value = params.get("leistung");
+      toggleMove();
+    }
+  }
+  const tsField = document.querySelector('#contact-form [name="ts"]');
+  if (tsField) tsField.value = String(Date.now());
+
+  async function submitForm(form, endpoint) {
+    const status = form.querySelector(".form__status");
+    const button = form.querySelector('button[type="submit"]');
+    const show = (text, ok) => {
+      if (!status) return;
+      status.hidden = false;
+      status.textContent = text;
+      status.className = "form__status " + (ok ? "form__status--ok" : "form__status--error");
+    };
+    button.disabled = true;
+    try {
+      const res = await fetch(endpoint, { method: "POST", body: new FormData(form) });
+      const data = await res.json().catch(() => ({}));
+      if (res.ok && data.ok) {
+        form.reset();
+        if (serviceSelect) serviceSelect.dispatchEvent(new Event("change"));
+        if (tsField) tsField.value = String(Date.now());
+        show("Vielen Dank! Ihre Anfrage wurde gesendet. Eine Bestätigung ist per E-Mail unterwegs.", true);
+      } else {
+        if (data.errors) {
+          Object.keys(data.errors).forEach((name) => {
+            const f = form.querySelector(`[name="${name}"]`);
+            const g = f && f.closest(".form__group");
+            if (g) g.classList.add("form__group--error");
+          });
+        }
+        show(data.message || "Senden fehlgeschlagen. Bitte versuchen Sie es erneut.", false);
+      }
+    } catch (err) {
+      show("Verbindungsfehler. Bitte versuchen Sie es später erneut oder rufen Sie uns an.", false);
+    } finally {
+      button.disabled = false;
+    }
+  }
   function getServiceLabel(form) {
     const serviceField = form.querySelector('[name="service"]');
     if (!serviceField || !serviceField.value) return "";
