@@ -24,7 +24,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/style.css">
 </head>
-<body>
+<body class="contact-page">
   <header class="header" role="banner">
     <div class="header__island">
       <a href="index.html" class="header__logo" aria-label="Easy2Moove Startseite">
@@ -53,24 +53,32 @@
   </header>
 
   <main id="main-content">
-    <section class="hero" aria-label="Kontakt">
-      <div class="hero__bg hero__bg--kontakt" role="img" aria-label="Easy2Moove kontaktieren"></div>
+    <section class="hero contact-hero" aria-labelledby="contact-title">
+      <div class="hero__bg hero__bg--kontakt" aria-hidden="true"></div>
       <div class="container hero__content">
-        <h1>Kontaktieren Sie <span class="highlight">uns</span></h1>
-        <p>Kontaktieren Sie uns per Telefon, E-Mail oder über das Kontaktformular. Wir prüfen Ihr Anliegen und melden uns zurück.</p>
+        <p class="contact-hero__eyebrow">Kontakt &amp; Beratung</p>
+        <h1 id="contact-title">Wir sind gerne <span class="highlight">für Sie da.</span></h1>
+        <p>Fragen Sie Ihr individuelles Angebot an oder erreichen Sie uns direkt per Telefon, E-Mail oder WhatsApp.</p>
+        <div class="hero__buttons">
+          <a class="btn btn--white" href="tel:+4915567375105">Jetzt anrufen: +49 155 67375105</a>
+          <a class="btn btn--ghost" href="#contact-form-title">Zum Kontaktformular</a>
+        </div>
       </div>
     </section>
 
-    <section class="section" aria-labelledby="contact-form-title">
+    <section class="section contact-section" aria-labelledby="contact-form-title">
       <div class="container">
-        <div class="grid grid--2">
-          <div>
-            <h2 id="contact-form-title">Individuelles <span class="highlight">Angebot</span> anfordern</h2>
-            <form class="form" id="contact-form" data-validate data-endpoint="kontakt-senden.php" method="post" novalidate>
+        <div class="contact-layout">
+          <div class="contact-form-panel">
+            <p class="contact-eyebrow">Ihre Anfrage</p>
+            <h2 id="contact-form-title">Was können wir <span class="highlight">für Sie tun?</span></h2>
+            <p class="contact-form__intro">Schicken Sie uns die wichtigsten Angaben. Wir melden uns zu Ihrem Anliegen zurück.</p>
+            <p class="contact-required-note"><span class="required">*</span> Pflichtfeld</p>
+            <form class="form" id="contact-form" data-validate data-endpoint="kontakt-senden.php" method="post" novalidate aria-describedby="form-privacy-note">
               <div class="form__group">
-                <label class="form__label" for="service">Gewünschte Leistung <span class="required">*</span></label>
+                <label class="form__label" for="service">Worum geht es? <span class="required" aria-hidden="true">*</span></label>
                 <select class="form__select" id="service" name="service" required>
-                  <option value="">Bitte wählen...</option>
+                  <option value="">Bitte wählen</option>
                   <option value="umzug">Umzug</option>
                   <option value="firmenumzug">Firmenumzug</option>
                   <option value="entruempelung">Entrümpelung</option>
@@ -79,57 +87,60 @@
                   <option value="transporter">Transporter mieten</option>
                   <option value="sonstiges">Sonstiges</option>
                 </select>
-                <div class="form__error">Bitte wählen Sie eine Leistung.</div>
+                <p class="form__error" id="service-error" aria-live="polite">Bitte wählen Sie eine Leistung.</p>
               </div>
               <div class="form__row">
                 <div class="form__group">
-                  <label class="form__label" for="name">Name <span class="required">*</span></label>
+                  <label class="form__label" for="name">Ihr Name <span class="required" aria-hidden="true">*</span></label>
                   <input class="form__input" type="text" id="name" name="name" required maxlength="100" autocomplete="name">
-                  <div class="form__error">Bitte geben Sie Ihren Namen ein.</div>
+                  <p class="form__error" id="name-error" aria-live="polite">Bitte geben Sie Ihren Namen ein.</p>
                 </div>
                 <div class="form__group">
-                  <label class="form__label" for="phone">Telefonnummer <span class="required">*</span></label>
-                  <input class="form__input" type="tel" id="phone" name="phone" required maxlength="40" autocomplete="tel">
-                  <div class="form__error">Bitte geben Sie eine gültige Telefonnummer ein.</div>
+                  <label class="form__label" for="phone">Telefonnummer <span class="required" aria-hidden="true">*</span></label>
+                  <input class="form__input" type="tel" id="phone" name="phone" required maxlength="40" autocomplete="tel" inputmode="tel">
+                  <p class="form__error" id="phone-error" aria-live="polite">Bitte geben Sie eine gültige Telefonnummer ein.</p>
                 </div>
               </div>
               <div class="form__group">
-                <label class="form__label" for="email">E-Mail-Adresse <span class="required">*</span></label>
-                <input class="form__input" type="email" id="email" name="email" required maxlength="150" autocomplete="email">
-                <div class="form__error">Bitte geben Sie eine gültige E-Mail-Adresse ein.</div>
+                <label class="form__label" for="email">E-Mail-Adresse <span class="required" aria-hidden="true">*</span></label>
+                <input class="form__input" type="email" id="email" name="email" required maxlength="150" autocomplete="email" inputmode="email">
+                <p class="form__error" id="email-error" aria-live="polite">Bitte geben Sie eine gültige E-Mail-Adresse ein.</p>
               </div>
               <fieldset class="form__move" id="move-fields" hidden>
-                <legend>Angaben zum Umzug</legend>
+                <legend>Angaben zu Ihrem Umzug</legend>
                 <div class="form__row">
                   <div class="form__group">
-                    <label class="form__label" for="move_from">Von (Auszugsadresse/Ort) <span class="required">*</span></label>
-                    <input class="form__input" type="text" id="move_from" name="move_from" maxlength="200" autocomplete="off" placeholder="z. B. Büdingen">
-                    <div class="form__error">Bitte geben Sie den Auszugsort an.</div>
+                    <label class="form__label" for="move_from">Von (Ort) <span class="required" aria-hidden="true">*</span></label>
+                    <input class="form__input" type="text" id="move_from" name="move_from" maxlength="200" autocomplete="address-level2" placeholder="Zum Beispiel: Büdingen">
+                    <p class="form__error" id="move-from-error" aria-live="polite">Bitte geben Sie den Auszugsort an.</p>
                   </div>
                   <div class="form__group">
-                    <label class="form__label" for="move_to">Nach (Einzugsadresse/Ort) <span class="required">*</span></label>
-                    <input class="form__input" type="text" id="move_to" name="move_to" maxlength="200" autocomplete="off" placeholder="z. B. Frankfurt am Main">
-                    <div class="form__error">Bitte geben Sie den Einzugsort an.</div>
+                    <label class="form__label" for="move_to">Nach (Ort) <span class="required" aria-hidden="true">*</span></label>
+                    <input class="form__input" type="text" id="move_to" name="move_to" maxlength="200" autocomplete="address-level2" placeholder="Zum Beispiel: Frankfurt am Main">
+                    <p class="form__error" id="move-to-error" aria-live="polite">Bitte geben Sie den Einzugsort an.</p>
                   </div>
                 </div>
               </fieldset>
               <div class="form__group">
-                <label class="form__label" for="move_date"><span id="date-label">Wunschtermin</span> <span class="required" id="date-req" hidden>*</span></label>
-                <input class="form__input" type="date" id="move_date" name="move_date">
-                <div class="form__error">Bitte wählen Sie ein gültiges Datum.</div>
+                <label class="form__label" for="move_date"><span id="date-label">Wunschtermin (optional)</span> <span class="required" id="date-req" aria-hidden="true" hidden>*</span></label>
+                <input class="form__input" type="date" id="move_date" name="move_date" aria-describedby="date-help">
+                <p class="form__help" id="date-help">Wenn Sie noch keinen Termin wissen, lassen Sie das Feld einfach frei.</p>
+                <p class="form__error" id="date-error" aria-live="polite">Bitte wählen Sie ein gültiges Datum.</p>
               </div>
               <div class="form__group">
-                <span class="form__label" id="contact-pref-label">Wie möchten Sie kontaktiert werden? <span class="required">*</span></span>
+                <span class="form__label" id="contact-pref-label">Wie dürfen wir Sie am liebsten erreichen? <span class="required" aria-hidden="true">*</span></span>
                 <div class="form__choices" role="radiogroup" aria-labelledby="contact-pref-label">
                   <label class="form__choice"><input type="radio" name="contact_pref" value="whatsapp" required> <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 11.5a8.4 8.4 0 0 1-12.4 7.400L3 21l1.900-5.400A8.500 8.500 0 1 1 21 11.500z"/></svg> WhatsApp</label>
                   <label class="form__choice"><input type="radio" name="contact_pref" value="anruf" required> <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92z"/></svg> Anruf</label>
                   <label class="form__choice"><input type="radio" name="contact_pref" value="email" required> <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4h16a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2z"/><polyline points="22,6 12,13 2,6"/></svg> E-Mail</label>
                 </div>
-                <div class="form__error">Bitte wählen Sie einen Kontaktweg.</div>
-              </div>              <div class="form__group">
-                <label class="form__label" for="message">Nachricht <span class="required">*</span></label>
-                <textarea class="form__textarea" id="message" name="message" required maxlength="3000" placeholder="Beschreiben Sie kurz Ihr Vorhaben..."></textarea>
-                <div class="form__error">Bitte beschreiben Sie Ihr Anliegen.</div>
+                <p class="form__error" id="contact-pref-error" aria-live="polite">Bitte wählen Sie einen Kontaktweg.</p>
+              </div>
+              <div class="form__group">
+                <label class="form__label" for="message">Ihre Nachricht <span class="required" aria-hidden="true">*</span></label>
+                <textarea class="form__textarea" id="message" name="message" required maxlength="3000" placeholder="Was sollten wir über Ihr Vorhaben wissen?" aria-describedby="message-help"></textarea>
+                <p class="form__help" id="message-help">Ein paar Stichpunkte reichen völlig aus.</p>
+                <p class="form__error" id="message-error" aria-live="polite">Bitte beschreiben Sie Ihr Anliegen.</p>
               </div>
               <div class="form__hp" aria-hidden="true">
                 <label>Webseite <input type="text" name="website" tabindex="-1" autocomplete="off"></label>
@@ -138,40 +149,45 @@
               <div class="form__group">
                 <label class="form__consent">
                   <input type="checkbox" name="consent" value="1" required>
-                  Ich habe die <a href="datenschutz.html" target="_blank" rel="noopener">Datenschutzerklärung</a> gelesen und stimme der Verarbeitung meiner Daten zur Bearbeitung meiner Anfrage zu. <span class="required">*</span>
+                  <span>Ich habe die <a href="datenschutz.html" target="_blank" rel="noopener">Datenschutzerklärung</a> gelesen und stimme der Verarbeitung meiner Daten zur Bearbeitung meiner Anfrage zu. <span class="required" aria-hidden="true">*</span></span>
                 </label>
-                <div class="form__error">Bitte stimmen Sie der Datenschutzerklärung zu.</div>
+                <p class="form__error" id="consent-error" aria-live="polite">Bitte stimmen Sie der Datenschutzerklärung zu.</p>
               </div>
-              <button type="submit" class="btn btn--primary">Anfrage absenden</button>
-              <p class="form__wa">Lieber direkt schreiben? <a class="btn btn--whatsapp" href="https://wa.me/4915567375105?text=Hallo%20Easy2Moove%2C%20ich%20habe%20eine%20Anfrage." target="_blank" rel="noopener">💬 Direkt per WhatsApp chatten</a></p>
-              <div class="form__status" id="form-status" role="status" aria-live="polite" hidden></div>
-              <p class="text-muted text-sm mt-1">Sie erhalten eine Bestätigung per E-Mail. Ihre Daten werden ausschließlich zur Bearbeitung Ihrer Anfrage verwendet.</p>
+              <button type="submit" class="btn btn--primary form__submit">
+                <span class="form__submit-label">Anfrage senden</span>
+                <span class="form__spinner" aria-hidden="true"></span>
+              </button>
+              <div class="form__status" id="form-status" role="status" aria-live="polite" aria-atomic="true" tabindex="-1" hidden></div>
+              <p class="form__privacy-note" id="form-privacy-note">Wir verwenden Ihre Angaben ausschließlich, um Ihre Anfrage zu bearbeiten. Bitte füllen Sie alle Pflichtfelder aus.</p>
             </form>
           </div>
-          <div>
-            <h2>Direkt <span class="highlight">erreichen</span></h2>
-            <div class="contact-block">
-              <h4>Adresse</h4>
-              <p class="text-muted">Easy2Moove – Einzelunternehmen<br>Am Herrenhöfchen 22<br>63654 Büdingen</p>
+          <aside class="contact-details" aria-labelledby="contact-details-title">
+            <p class="contact-eyebrow">Direkt erreichbar</p>
+            <h2 id="contact-details-title">So erreichen Sie <span class="highlight">uns</span></h2>
+            <p class="contact-details__intro">Wählen Sie den Kontaktweg, der für Sie am einfachsten ist.</p>
+            <div class="contact-method">
+              <h3>Telefon</h3>
+              <a class="contact-method__link" href="tel:+4915567375105">+49 155 67375105</a>
+              <p>Unsere aktuelle Erreichbarkeit erfahren Sie gerne telefonisch.</p>
             </div>
-            <div class="contact-block">
-              <h4>Telefon</h4>
-              <p><a href="tel:+4915567375105">+49 155 67375105</a></p>
+            <div class="contact-method">
+              <h3>E-Mail</h3>
+              <a class="contact-method__link" href="mailto:info@easy2moove.de">info@easy2moove.de</a>
             </div>
-            <div class="contact-block">
-              <h4>E-Mail</h4>
-              <p><a href="mailto:info@easy2moove.de">info@easy2moove.de</a></p>
+            <div class="contact-method">
+              <h3>WhatsApp</h3>
+              <a class="contact-method__link" href="https://wa.me/4915567375105?text=Hallo%20Easy2Moove%2C%20ich%20habe%20eine%20Anfrage." target="_blank" rel="noopener">Nachricht über WhatsApp senden</a>
             </div>
-            <div>
-              <h4>Öffnungszeiten</h4>
-              <p class="text-muted">Bitte erfragen Sie unsere aktuelle Erreichbarkeit telefonisch oder per E-Mail.</p>
+            <div class="contact-method contact-method--address">
+              <h3>Adresse</h3>
+              <p>Easy2Moove – Einzelunternehmen<br>Am Herrenhöfchen 22<br>63654 Büdingen</p>
             </div>
-            <div class="contact-block">
-              <h4>Einsatzgebiet</h4>
-              <p class="text-muted">Wetterau und Main-Kinzig-Kreis; deutschlandweite Umzüge auf Anfrage.</p>
+            <div class="contact-area">
+              <h3>Einsatzgebiet</h3>
+              <p>Wetterau und Main-Kinzig-Kreis. Deutschlandweite Umzüge auf Anfrage.</p>
               <a href="einsatzgebiet.html">Mehr zum Einsatzgebiet</a>
             </div>
-          </div>
+          </aside>
         </div>
       </div>
     </section>

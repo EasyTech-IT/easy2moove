@@ -87,82 +87,133 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   /* ---------- Formular-Validierung ---------- */
+  const updateDescription = (field, errorId, addError) => {
+    if (!errorId) return;
+    const descriptions = new Set(
+      (field.getAttribute("aria-describedby") || "")
+        .split(/\s+/)
+        .filter(Boolean),
+    );
+    if (addError) descriptions.add(errorId);
+    else descriptions.delete(errorId);
+    if (descriptions.size) {
+      field.setAttribute("aria-describedby", Array.from(descriptions).join(" "));
+    } else {
+      field.removeAttribute("aria-describedby");
+    }
+  };
+
   document.querySelectorAll(".form[data-validate]").forEach((form) => {
     form.setAttribute("novalidate", "");
+    const errorMessages = form.querySelectorAll(".form__error");
+    errorMessages.forEach((error) => {
+      error.dataset.defaultMessage = error.textContent;
+    });
+
+    const clearGroupError = (group) => {
+      if (!group) return;
+      group.classList.remove("form__group--error");
+      const error = group.querySelector(".form__error");
+      group.querySelectorAll("input, select, textarea, [role='radiogroup']").forEach((field) => {
+        field.removeAttribute("aria-invalid");
+        updateDescription(field, error?.id, false);
+      });
+      if (error && error.dataset.defaultMessage) {
+        error.textContent = error.dataset.defaultMessage;
+      }
+    };
+
+    const markFieldError = (field, message) => {
+      const group = field.closest(".form__group");
+      if (!group) return;
+      group.classList.add("form__group--error");
+      field.setAttribute("aria-invalid", "true");
+      const error = group.querySelector(".form__error");
+      updateDescription(field, error?.id, true);
+      if (error && message) error.textContent = message;
+      if (field.type === "radio") {
+        const radioGroup = group.querySelector('[role="radiogroup"]');
+        if (radioGroup) {
+          radioGroup.setAttribute("aria-invalid", "true");
+          updateDescription(radioGroup, error?.id, true);
+        }
+      }
+    };
+
+    const focusFirstError = () => {
+      const group = form.querySelector(".form__group--error");
+      const field = group?.querySelector("input:not([type='hidden']), select, textarea");
+      if (!field) return;
+      const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+      field.scrollIntoView({
+        behavior: reducedMotion ? "auto" : "smooth",
+        block: "center",
+      });
+      field.focus({ preventScroll: true });
+    };
 
     form.addEventListener("submit", (e) => {
+      if (form.dataset.submitting === "true") {
+        e.preventDefault();
+        return;
+      }
+
       let valid = true;
       const mailtoRecipient = form.dataset.mailtoRecipient;
       const endpoint = form.dataset.endpoint;
 
-      // Reset errors
-      form
-        .querySelectorAll(".form__group--error")
-        .forEach((g) => g.classList.remove("form__group--error"));
+      form.querySelectorAll(".form__group--error").forEach(clearGroupError);
+      const status = form.querySelector(".form__status");
+      if (status) status.hidden = true;
 
       // Required fields
       form.querySelectorAll("[required]").forEach((field) => {
-        const group = field.closest(".form__group");
         if (field.type === "radio") return;
-        if (!field.value.trim()) {
+        if (
+          (field.type === "checkbox" && !field.checked) ||
+          (field.type !== "checkbox" && !field.value.trim())
+        ) {
           valid = false;
-          if (group) group.classList.add("form__group--error");
+          markFieldError(field);
         }
       });
 
-      // Email pattern
       form.querySelectorAll('input[type="email"]').forEach((email) => {
-        const group = email.closest(".form__group");
-        const pattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        if (email.value && !pattern.test(email.value)) {
+        if (email.value && email.validity.typeMismatch) {
           valid = false;
-          if (group) group.classList.add("form__group--error");
+          markFieldError(email);
         }
       });
 
-      // Kontaktweg (Radio-Gruppe)
       const radios = form.querySelectorAll('input[type="radio"][required]');
       if (radios.length && !form.querySelector('input[type="radio"]:checked')) {
         valid = false;
-        radios[0].closest(".form__group").classList.add("form__group--error");
+        markFieldError(radios[0]);
+        const radioGroup = radios[0].closest(".form__group")?.querySelector('[role="radiogroup"]');
+        if (radioGroup) radioGroup.setAttribute("aria-invalid", "true");
       }
 
-      // Telefonnummer
       form.querySelectorAll('input[type="tel"][required]').forEach((tel) => {
-        const group = tel.closest(".form__group");
         if (tel.value && !/^\+?[0-9 ()\/\-]{6,25}$/.test(tel.value.trim())) {
           valid = false;
-          if (group) group.classList.add("form__group--error");
+          markFieldError(tel);
         }
       });
 
-      // Umzugsdatum nicht in der Vergangenheit
       const dateField = form.querySelector("#move_date");
       if (dateField && dateField.value) {
+        const selectedDate = new Date(`${dateField.value}T00:00:00`);
         const today = new Date();
         today.setHours(0, 0, 0, 0);
-        if (new Date(dateField.value) < today) {
+        if (selectedDate < today) {
           valid = false;
-          dateField.closest(".form__group").classList.add("form__group--error");
+          markFieldError(dateField);
         }
       }
 
-      // Consent checkbox
-      form
-        .querySelectorAll('input[type="checkbox"][required]')
-        .forEach((cb) => {
-          const group = cb.closest(".form__group");
-          if (!cb.checked) {
-            valid = false;
-            if (group) group.classList.add("form__group--error");
-          }
-        });
-
       if (!valid) {
         e.preventDefault();
-        const firstError = form.querySelector(".form__group--error");
-        if (firstError)
-          firstError.scrollIntoView({ behavior: "smooth", block: "center" });
+        focusFirstError();
         return;
       }
 
@@ -185,11 +236,12 @@ document.addEventListener("DOMContentLoaded", () => {
         window.location.href = `mailto:${encodeURIComponent(mailtoRecipient)}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
       }
     });
-    // Live reset on input
-    form.addEventListener("input", (e) => {
+    const clearOnEdit = (e) => {
       const group = e.target.closest(".form__group");
-      if (group) group.classList.remove("form__group--error");
-    });
+      if (group) clearGroupError(group);
+    };
+    form.addEventListener("input", clearOnEdit);
+    form.addEventListener("change", clearOnEdit);
   });
 
   /* ---------- Umzugsfelder & Versand ---------- */
@@ -198,7 +250,13 @@ document.addEventListener("DOMContentLoaded", () => {
   if (moveFieldset && serviceSelect) {
     const moveInputs = moveFieldset.querySelectorAll("input");
     const dateInput = document.getElementById("move_date");
-    if (dateInput) dateInput.min = new Date().toISOString().slice(0, 10);
+    const getLocalDate = () => {
+      const today = new Date();
+      const month = String(today.getMonth() + 1).padStart(2, "0");
+      const day = String(today.getDate()).padStart(2, "0");
+      return `${today.getFullYear()}-${month}-${day}`;
+    };
+    if (dateInput) dateInput.min = getLocalDate();
     const toggleMove = () => {
       const isMove = ["umzug", "firmenumzug"].includes(serviceSelect.value);
       moveFieldset.hidden = !isMove;
@@ -206,14 +264,21 @@ document.addEventListener("DOMContentLoaded", () => {
       if (dateInput) dateInput.required = isMove;
       const dateReq = document.getElementById("date-req");
       const dateLabel = document.getElementById("date-label");
+      const dateHelp = document.getElementById("date-help");
       if (dateReq) dateReq.hidden = !isMove;
-      if (dateLabel) dateLabel.textContent = isMove ? "Umzugsdatum" : "Wunschtermin";
+      if (dateLabel) dateLabel.textContent = isMove ? "Umzugsdatum" : "Wunschtermin (optional)";
+      if (dateHelp) {
+        dateHelp.textContent = isMove
+          ? "Bitte wählen Sie den geplanten Umzugstermin."
+          : "Wenn Sie schon einen Wunschtermin haben, können Sie ihn hier angeben.";
+      }
     };
     serviceSelect.addEventListener("change", toggleMove);
     toggleMove();
     const params = new URLSearchParams(window.location.search);
-    if (params.get("leistung") && serviceSelect.querySelector(`option[value="${params.get("leistung")}"]`)) {
-      serviceSelect.value = params.get("leistung");
+    const requestedService = params.get("leistung");
+    if (requestedService && Array.from(serviceSelect.options).some((option) => option.value === requestedService)) {
+      serviceSelect.value = requestedService;
       toggleMove();
     }
   }
@@ -223,35 +288,90 @@ document.addEventListener("DOMContentLoaded", () => {
   async function submitForm(form, endpoint) {
     const status = form.querySelector(".form__status");
     const button = form.querySelector('button[type="submit"]');
+    const buttonLabel = button?.querySelector(".form__submit-label");
+    const originalButtonLabel = buttonLabel?.textContent;
     const show = (text, ok) => {
       if (!status) return;
       status.hidden = false;
       status.textContent = text;
       status.className = "form__status " + (ok ? "form__status--ok" : "form__status--error");
+      status.setAttribute("role", ok ? "status" : "alert");
     };
-    button.disabled = true;
+    form.dataset.submitting = "true";
+    form.setAttribute("aria-busy", "true");
+    form.classList.add("form--submitting");
+    if (button) button.disabled = true;
+    if (buttonLabel) buttonLabel.textContent = "Wird gesendet …";
     try {
       const res = await fetch(endpoint, { method: "POST", body: new FormData(form) });
-      const data = await res.json().catch(() => ({}));
+      let data;
+      try {
+        data = await res.json();
+      } catch {
+        show("Der Server hat keine gültige Antwort geliefert. Bitte versuchen Sie es erneut oder rufen Sie uns an.", false);
+        return;
+      }
+      if (!data || typeof data !== "object") {
+        show("Der Server hat keine gültige Antwort geliefert. Bitte versuchen Sie es erneut oder rufen Sie uns an.", false);
+        return;
+      }
       if (res.ok && data.ok) {
         form.reset();
+        form.querySelectorAll(".form__group--error").forEach((group) => {
+          group.classList.remove("form__group--error");
+          const error = group.querySelector(".form__error");
+          group.querySelectorAll("input, select, textarea, [role='radiogroup']").forEach((field) => {
+            field.removeAttribute("aria-invalid");
+            updateDescription(field, error?.id, false);
+          });
+          if (error && error.dataset.defaultMessage) {
+            error.textContent = error.dataset.defaultMessage;
+          }
+        });
         if (serviceSelect) serviceSelect.dispatchEvent(new Event("change"));
         if (tsField) tsField.value = String(Date.now());
-        show("Vielen Dank! Ihre Anfrage wurde gesendet. Eine Bestätigung ist per E-Mail unterwegs.", true);
+        show("Vielen Dank! Ihre Anfrage wurde gesendet. Wir melden uns schnellstmöglich bei Ihnen.", true);
       } else {
         if (data.errors) {
-          Object.keys(data.errors).forEach((name) => {
-            const f = form.querySelector(`[name="${name}"]`);
-            const g = f && f.closest(".form__group");
-            if (g) g.classList.add("form__group--error");
+          Object.entries(data.errors).forEach(([name, message]) => {
+            const field = Array.from(form.elements).find((element) => element.name === name);
+            if (field) {
+              const group = field.closest(".form__group");
+              if (group) {
+                group.classList.add("form__group--error");
+                const radioGroup = group.querySelector('[role="radiogroup"]');
+                const error = group.querySelector(".form__error");
+                if (error && typeof message === "string") error.textContent = message;
+                updateDescription(field, error?.id, true);
+                if (radioGroup) {
+                  radioGroup.setAttribute("aria-invalid", "true");
+                  updateDescription(radioGroup, error?.id, true);
+                }
+              }
+              field.setAttribute("aria-invalid", "true");
+            }
           });
         }
-        show(data.message || "Senden fehlgeschlagen. Bitte versuchen Sie es erneut.", false);
+        show(data.message || "Ihre Anfrage konnte nicht gesendet werden. Bitte versuchen Sie es erneut oder rufen Sie uns an.", false);
+        const firstError = form.querySelector(".form__group--error");
+        const firstErrorField = firstError?.querySelector("input:not([type='hidden']), select, textarea");
+        if (firstErrorField) {
+          const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+          firstErrorField.scrollIntoView({
+            behavior: reducedMotion ? "auto" : "smooth",
+            block: "center",
+          });
+          firstErrorField.focus({ preventScroll: true });
+        }
       }
-    } catch (err) {
-      show("Verbindungsfehler. Bitte versuchen Sie es später erneut oder rufen Sie uns an.", false);
+    } catch {
+      show("Verbindungsfehler: Ihre Anfrage wurde nicht gesendet. Bitte prüfen Sie Ihre Internetverbindung und versuchen Sie es erneut oder rufen Sie uns an.", false);
     } finally {
-      button.disabled = false;
+      if (button) button.disabled = false;
+      if (buttonLabel) buttonLabel.textContent = originalButtonLabel;
+      form.classList.remove("form--submitting");
+      form.removeAttribute("aria-busy");
+      delete form.dataset.submitting;
     }
   }
   function getServiceLabel(form) {
