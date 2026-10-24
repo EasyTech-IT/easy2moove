@@ -70,8 +70,9 @@
       <div class="container">
         <div class="contact-layout">
           <div class="contact-form-panel">
+            <div id="contact-form-content">
             <p class="contact-eyebrow">Ihre Anfrage</p>
-            <h2 id="contact-form-title">Was können wir <span class="highlight">für Sie tun?</span></h2>
+            <h2 id="contact-form-title" tabindex="-1">Was können wir <span class="highlight">für Sie tun?</span></h2>
             <p class="contact-form__intro">Schicken Sie uns die wichtigsten Angaben. Wir melden uns zu Ihrem Anliegen zurück.</p>
             <p class="contact-required-note"><span class="required">*</span> Pflichtfeld</p>
             <form class="form" id="contact-form" data-validate data-endpoint="kontakt-senden.php" method="post" novalidate aria-describedby="form-privacy-note">
@@ -160,6 +161,25 @@
               <div class="form__status" id="form-status" role="status" aria-live="polite" aria-atomic="true" tabindex="-1" hidden></div>
               <p class="form__privacy-note" id="form-privacy-note">Wir verwenden Ihre Angaben ausschließlich, um Ihre Anfrage zu bearbeiten. Bitte füllen Sie alle Pflichtfelder aus.</p>
             </form>
+            </div>
+            <section class="form-success" id="form-success" role="status" aria-live="polite" aria-atomic="true" aria-labelledby="form-success-title" hidden>
+              <div class="form-success__icon" aria-hidden="true">
+                <svg viewBox="0 0 64 64" fill="none">
+                  <path d="M18 33.5 27.5 43 47 22" />
+                </svg>
+              </div>
+              <p class="contact-eyebrow">Anfrage eingegangen</p>
+              <h2 id="form-success-title" tabindex="-1">Vielen Dank für Ihre Anfrage.</h2>
+              <p class="form-success__message" id="form-success-message"></p>
+              <p class="form-success__email-note" id="form-success-email-note" hidden>
+                Eine Bestätigung wurde an <strong id="form-success-email"></strong> gesendet. Bitte prüfen Sie bei Bedarf auch Ihren Spam-Ordner.
+              </p>
+              <div class="form-success__actions">
+                <button type="button" class="btn btn--primary" id="new-contact-request">Noch eine Anfrage senden</button>
+                <a class="btn btn--outline" href="tel:+4915567375105">Direkt anrufen</a>
+              </div>
+              <a class="form-success__home" href="index.html">Zur Startseite</a>
+            </section>
           </div>
           <aside class="contact-details" aria-labelledby="contact-details-title">
             <p class="contact-eyebrow">Direkt erreichbar</p>

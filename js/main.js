@@ -285,6 +285,26 @@ document.addEventListener("DOMContentLoaded", () => {
   const tsField = document.querySelector('#contact-form [name="ts"]');
   if (tsField) tsField.value = String(Date.now());
 
+  const contactFormContent = document.getElementById("contact-form-content");
+  const formSuccess = document.getElementById("form-success");
+  const newContactRequest = document.getElementById("new-contact-request");
+  if (newContactRequest && contactFormContent && formSuccess) {
+    newContactRequest.addEventListener("click", () => {
+      formSuccess.hidden = true;
+      contactFormContent.hidden = false;
+      const heading = document.getElementById("contact-form-title");
+      if (heading) {
+        heading.scrollIntoView({
+          behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches
+            ? "auto"
+            : "smooth",
+          block: "start",
+        });
+        heading.focus({ preventScroll: true });
+      }
+    });
+  }
+
   async function submitForm(form, endpoint) {
     const status = form.querySelector(".form__status");
     const button = form.querySelector('button[type="submit"]');
@@ -316,6 +336,7 @@ document.addEventListener("DOMContentLoaded", () => {
         return;
       }
       if (res.ok && data.ok) {
+        const submittedEmail = form.elements.email.value.trim();
         form.reset();
         form.querySelectorAll(".form__group--error").forEach((group) => {
           group.classList.remove("form__group--error");
@@ -330,7 +351,26 @@ document.addEventListener("DOMContentLoaded", () => {
         });
         if (serviceSelect) serviceSelect.dispatchEvent(new Event("change"));
         if (tsField) tsField.value = String(Date.now());
-        show("Vielen Dank! Ihre Anfrage wurde gesendet. Wir melden uns schnellstmöglich bei Ihnen.", true);
+        const successMessage = document.getElementById("form-success-message");
+        const successEmailNote = document.getElementById("form-success-email-note");
+        const successEmail = document.getElementById("form-success-email");
+        if (successMessage) {
+          successMessage.textContent = data.confirmationEmailSent === true
+            ? "Ihre Anfrage ist bei uns eingegangen. Wir melden uns schnellstmöglich bei Ihnen."
+            : "Ihre Anfrage ist bei uns eingegangen und wurde übermittelt. Die automatische Bestätigungsmail konnte leider nicht gesendet werden. Bei Rückfragen erreichen Sie uns telefonisch oder per E-Mail.";
+        }
+        if (successEmailNote && successEmail) {
+          successEmailNote.hidden = data.confirmationEmailSent !== true;
+          successEmail.textContent = submittedEmail;
+        }
+        if (contactFormContent && formSuccess) {
+          contactFormContent.hidden = true;
+          formSuccess.hidden = false;
+          const successHeading = document.getElementById("form-success-title");
+          if (successHeading) successHeading.focus();
+        } else {
+          show("Ihre Anfrage ist bei uns eingegangen.", true);
+        }
       } else {
         if (data.errors) {
           Object.entries(data.errors).forEach(([name, message]) => {

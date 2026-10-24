@@ -257,9 +257,9 @@ $subjectOwner = 'Neue Anfrage: ' . $serviceLabel . ' – ' . $name;
 if (!sendMail(OWNER_MAIL, $subjectOwner, $ownerText, $ownerHtml, $email)) {
     respond(500, ['ok' => false, 'message' => 'Die Nachricht konnte nicht gesendet werden. Bitte rufen Sie uns an oder schreiben Sie direkt an ' . OWNER_MAIL . '.']);
 }
-sendMail($email, 'Ihre Anfrage bei ' . BRAND . ' – Bestätigung', $confirmText, $confirmHtml, OWNER_MAIL);
+$confirmationEmailSent = sendMail($email, 'Ihre Anfrage bei ' . BRAND . ' – Bestätigung', $confirmText, $confirmHtml, OWNER_MAIL);
 
 $hits[] = time();
 @file_put_contents($rateFile, implode("\n", $hits), LOCK_EX);
 
-respond(200, ['ok' => true]);
+respond(200, ['ok' => true, 'confirmationEmailSent' => $confirmationEmailSent]);
