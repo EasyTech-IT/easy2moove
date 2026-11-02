@@ -1,0 +1,22 @@
+Options -Indexes
+DirectorySlash Off
+DirectoryIndex index.html index.php
+
+<IfModule mod_rewrite.c>
+RewriteEngine On
+
+# Alte Adressen mit .html (z. B. aus QR-Codes) dauerhaft auf die saubere URL umleiten
+RewriteCond %{THE_REQUEST} \s/+index\.html[\s?] [NC]
+RewriteRule ^index\.html$ / [R=301,L]
+RewriteCond %{THE_REQUEST} \s/+[^\s?]+\.html[\s?] [NC]
+RewriteRule ^(.+)\.html$ /$1 [R=301,L]
+
+# Schrägstrich am Ende entfernen (außer bei der Startseite)
+RewriteCond %{REQUEST_URI} !^/$
+RewriteRule ^(.+)/$ /$1 [R=301,L]
+
+# Saubere URL intern der passenden .html-Datei zuordnen
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{DOCUMENT_ROOT}/$1.html -f
+RewriteRule ^(.+)$ $1.html [L]
+</IfModule>

@@ -1,4 +1,4 @@
-﻿
+
 name: Deploy Website to IONOS
 
 on:
@@ -77,6 +77,6 @@ jobs:
 
           curl --fail --silent --show-error --retry 5 --retry-delay 2 \
             --output "$verify_dir/ueber-uns.html" \
-            "https://easy2moove.de/ueber-uns.html?deploy=$DEPLOY_SHA"
+            "https://easy2moove.de/ueber-uns?deploy=$DEPLOY_SHA"
           grep -Fq "css/style.css?v=$DEPLOY_SHA" "$verify_dir/ueber-uns.html" \
             || { echo "Die veröffentlichte Seite verwendet nicht die versionsgekennzeichnete CSS-Datei."; exit 1; }
