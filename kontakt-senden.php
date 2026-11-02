@@ -155,11 +155,28 @@ function icon(string $name, int $size = 32): string
     return '<img src="' . SITE_URL . '/img/email/' . $name . '.png" width="' . $size . '" height="' . $size . '" alt="" style="display:block;border:0;width:' . $size . 'px;height:' . $size . 'px;">';
 }
 
+// Jede Kategorie hat ihre eigene Farbe: [Hauptfarbe, dunkle Textfarbe, helle Hintergrundfarbe]
+const COLORS = [
+    'truck' => ['#00a859', '#007a3d', '#e6f6ee'],
+    'user' => ['#2563eb', '#1d4ed8', '#e8effd'],
+    'phone' => ['#f97316', '#c2410c', '#fff0e5'],
+    'mail' => ['#7c3aed', '#6d28d9', '#f1eafd'],
+    'pin' => ['#0891b2', '#0e7490', '#e2f5f9'],
+    'flag' => ['#e11d48', '#be123c', '#fde8ed'],
+    'calendar' => ['#d97706', '#b45309', '#fdf3e0'],
+    'whatsapp' => ['#25d366', '#128c4a', '#e5f9ec'],
+    'message' => ['#4f46e5', '#4338ca', '#ecebfd'],
+    'check' => ['#00a859', '#007a3d', '#e6f6ee'],
+    'inbox' => ['#00a859', '#007a3d', '#e6f6ee'],
+];
+
 function row(string $icon, string $label, string $valueHtml): string
 {
-    return '<tr><td style="padding:10px 12px;width:32px;vertical-align:top;">' . icon($icon) . '</td>'
-        . '<td style="padding:10px 0;vertical-align:top;"><div style="font-size:12px;color:#555555;text-transform:uppercase;letter-spacing:.05em;">'
-        . $label . '</div><div style="font-size:15px;color:#222222;font-weight:600;margin-top:2px;">' . $valueHtml . '</div></td></tr>';
+    [$main, $dark, $tint] = COLORS[$icon];
+    return '<tr><td style="padding:0 0 6px;"><table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:' . $tint . ';border-left:4px solid ' . $main . ';border-radius:8px;">'
+        . '<tr><td style="padding:8px 10px;width:28px;vertical-align:middle;">' . icon($icon, 28) . '</td>'
+        . '<td style="padding:8px 10px 8px 0;vertical-align:middle;"><div style="font-size:11px;line-height:1.3;color:' . $dark . ';text-transform:uppercase;letter-spacing:.06em;font-weight:700;">'
+        . $label . '</div><div style="font-size:15px;line-height:1.4;color:#222222;font-weight:600;">' . $valueHtml . '</div></td></tr></table></td></tr>';
 }
 
 function layout(string $title, string $titleIcon, string $intro, string $rows, string $extra, string $footer): string
@@ -171,7 +188,7 @@ function layout(string $title, string $titleIcon, string $intro, string $rows, s
         . '<tr><td style="padding:28px 28px 8px;"><table role="presentation" cellpadding="0" cellspacing="0"><tr><td style="padding-right:12px;vertical-align:middle;">' . icon($titleIcon, 40) . '</td>'
         . '<td style="vertical-align:middle;"><h1 style="margin:0;font-size:20px;line-height:1.3;color:#222222;">' . $title . '</h1></td></tr></table>'
         . '<p style="margin:12px 0 0;font-size:15px;line-height:1.5;color:#555555;">' . $intro . '</p></td></tr>'
-        . '<tr><td style="padding:12px 28px;"><table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:#f7f7f7;border:1px solid #eeeeee;border-radius:10px;">'
+        . '<tr><td style="padding:12px 28px 6px;"><table role="presentation" width="100%" cellpadding="0" cellspacing="0">'
         . $rows . '</table></td></tr>' . $extra
         . '<tr><td style="padding:20px 28px 28px;border-top:1px solid #eeeeee;font-size:12px;line-height:1.6;color:#555555;">' . $footer . '</td></tr>'
         . '</table></body></html>';
@@ -179,10 +196,11 @@ function layout(string $title, string $titleIcon, string $intro, string $rows, s
 
 function messageBox(string $messageHtml): string
 {
-    return '<tr><td style="padding:4px 28px 16px;"><table role="presentation" cellpadding="0" cellspacing="0" style="margin-bottom:6px;"><tr><td style="padding-right:8px;">' . icon('message', 24) . '</td>'
-        . '<td style="font-size:12px;color:#555555;text-transform:uppercase;letter-spacing:.05em;">Nachricht</td></tr></table>'
-        . '<div style="background:#f7f7f7;border-left:4px solid #00a859;border-radius:6px;padding:14px 16px;font-size:15px;line-height:1.6;color:#222222;">'
-        . $messageHtml . '</div></td></tr>';
+    [$main, $dark, $tint] = COLORS['message'];
+    return '<tr><td style="padding:0 28px 16px;"><table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:' . $tint . ';border-left:4px solid ' . $main . ';border-radius:8px;">'
+        . '<tr><td style="padding:10px 12px 4px;"><table role="presentation" cellpadding="0" cellspacing="0"><tr><td style="padding-right:8px;">' . icon('message', 24) . '</td>'
+        . '<td style="font-size:11px;font-weight:700;color:' . $dark . ';text-transform:uppercase;letter-spacing:.06em;">Nachricht</td></tr></table></td></tr>'
+        . '<tr><td style="padding:2px 14px 12px;font-size:15px;line-height:1.55;color:#222222;">' . $messageHtml . '</td></tr></table></td></tr>';
 }
 
 function ctaButton(string $href, string $label): string
@@ -199,8 +217,8 @@ $messageHtml = nl2br(e($message), false);
 // --- Mail an den Geschäftsführer ---
 $ownerRows = row('truck', 'Leistung', e($serviceLabel))
     . row('user', 'Name', e($name))
-    . row('phone', 'Telefon', '<a href="tel:' . e(preg_replace('/[^0-9+]/', '', $phone) ?? '') . '" style="color:#007a3d;text-decoration:none;">' . e($phone) . '</a>')
-    . row('mail', 'E-Mail', '<a href="mailto:' . e($email) . '" style="color:#007a3d;text-decoration:none;">' . e($email) . '</a>');
+    . row('phone', 'Telefon', '<a href="tel:' . e(preg_replace('/[^0-9+]/', '', $phone) ?? '') . '" style="color:#c2410c;text-decoration:none;">' . e($phone) . '</a>')
+    . row('mail', 'E-Mail', '<a href="mailto:' . e($email) . '" style="color:#6d28d9;text-decoration:none;">' . e($email) . '</a>');
 if ($isMove) {
     $ownerRows .= row('pin', 'Von', e($from)) . row('flag', 'Nach', e($to));
 }
@@ -238,8 +256,8 @@ $confirmHtml = layout(
     $confirmRows,
     messageBox($messageHtml)
     . '<tr><td style="padding:0 28px 24px;"><table role="presentation" cellpadding="0" cellspacing="0" style="font-size:14px;color:#555555;line-height:1.6;">'
-    . '<tr><td style="padding:0 10px 8px 0;">' . icon('phone', 24) . '</td><td style="padding-bottom:8px;">Dringend? Rufen Sie uns an: <a href="tel:+4915567375105" style="color:#007a3d;font-weight:600;">' . PHONE . '</a></td></tr>'
-    . '<tr><td style="padding:0 10px 0 0;">' . icon('mail', 24) . '</td><td>Oder schreiben Sie an <a href="mailto:' . OWNER_MAIL . '" style="color:#007a3d;font-weight:600;">' . OWNER_MAIL . '</a></td></tr></table></td></tr>',
+    . '<tr><td style="padding:0 10px 8px 0;">' . icon('phone', 24) . '</td><td style="padding-bottom:8px;">Dringend? Rufen Sie uns an: <a href="tel:+4915567375105" style="color:#c2410c;font-weight:600;">' . PHONE . '</a></td></tr>'
+    . '<tr><td style="padding:0 10px 0 0;">' . icon('mail', 24) . '</td><td>Oder schreiben Sie an <a href="mailto:' . OWNER_MAIL . '" style="color:#6d28d9;font-weight:600;">' . OWNER_MAIL . '</a></td></tr></table></td></tr>',
     'Diese Bestätigung wurde automatisch erstellt, weil Ihre E-Mail-Adresse im Kontaktformular auf ' . SITE_HOST . ' angegeben wurde. '
     . 'Ihre Daten verwenden wir ausschließlich zur Bearbeitung Ihrer Anfrage. Sie haben das Recht auf Auskunft, Berichtigung und Löschung (siehe Datenschutzerklärung).<br><br>' . $legalFooter
 );
@@ -271,9 +289,23 @@ $subjectOwner = 'Neue Anfrage: ' . $serviceLabel . ' – ' . $name;
 if (!sendMail(OWNER_MAIL, $subjectOwner, $ownerText, $ownerHtml, $email)) {
     respond(500, ['ok' => false, 'message' => 'Die Nachricht konnte nicht gesendet werden. Bitte rufen Sie uns an oder schreiben Sie direkt an ' . OWNER_MAIL . '.']);
 }
-$confirmationEmailSent = sendMail($email, 'Ihre Anfrage bei ' . BRAND . ' – Bestätigung', $confirmText, $confirmHtml, OWNER_MAIL);
-
 $hits[] = time();
 @file_put_contents($rateFile, implode("\n", $hits), LOCK_EX);
 
-respond(200, ['ok' => true, 'confirmationEmailSent' => $confirmationEmailSent]);
+// Antwort sofort an den Browser senden; die Bestätigung an den Absender wird danach verschickt
+ignore_user_abort(true);
+@set_time_limit(60);
+$json = json_encode(['ok' => true, 'confirmationEmailSent' => true], JSON_UNESCAPED_UNICODE);
+http_response_code(200);
+header('Content-Length: ' . strlen($json));
+header('Connection: close');
+echo $json;
+while (ob_get_level() > 0) {
+    @ob_end_flush();
+}
+flush();
+if (function_exists('fastcgi_finish_request')) {
+    fastcgi_finish_request();
+}
+
+sendMail($email, 'Ihre Anfrage bei ' . BRAND . ' – Bestätigung', $confirmText, $confirmHtml, OWNER_MAIL);

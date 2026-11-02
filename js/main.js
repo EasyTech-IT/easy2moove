@@ -322,8 +322,10 @@ document.addEventListener("DOMContentLoaded", () => {
     form.classList.add("form--submitting");
     if (button) button.disabled = true;
     if (buttonLabel) buttonLabel.textContent = "Wird gesendet …";
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 30000);
     try {
-      const res = await fetch(endpoint, { method: "POST", body: new FormData(form) });
+      const res = await fetch(endpoint, { method: "POST", body: new FormData(form), signal: controller.signal });
       let data;
       try {
         data = await res.json();
@@ -407,6 +409,7 @@ document.addEventListener("DOMContentLoaded", () => {
     } catch {
       show("Verbindungsfehler: Ihre Anfrage wurde nicht gesendet. Bitte prüfen Sie Ihre Internetverbindung und versuchen Sie es erneut oder rufen Sie uns an.", false);
     } finally {
+      clearTimeout(timeoutId);
       if (button) button.disabled = false;
       if (buttonLabel) buttonLabel.textContent = originalButtonLabel;
       form.classList.remove("form--submitting");

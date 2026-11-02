@@ -5720,3 +5720,14 @@ img.loaded {
     padding-inline: 1rem;
   }
 }
+
+/* Contact preference colors (one color per category) */
+.contact-page .form__choice:nth-child(1) svg { color: #25d366; }
+.contact-page .form__choice:nth-child(2) svg { color: #f97316; }
+.contact-page .form__choice:nth-child(3) svg { color: #7c3aed; }
+.contact-page .form__choice:nth-child(1):hover, .contact-page .form__choice:nth-child(1):has(input:checked) { border-color: #25d366; background: #e5f9ec; }
+.contact-page .form__choice:nth-child(2):hover, .contact-page .form__choice:nth-child(2):has(input:checked) { border-color: #f97316; background: #fff0e5; }
+.contact-page .form__choice:nth-child(3):hover, .contact-page .form__choice:nth-child(3):has(input:checked) { border-color: #7c3aed; background: #f1eafd; }
+.contact-page .form__choice:nth-child(1) input { accent-color: #25d366; }
+.contact-page .form__choice:nth-child(2) input { accent-color: #f97316; }
+.contact-page .form__choice:nth-child(3) input { accent-color: #7c3aed; }
