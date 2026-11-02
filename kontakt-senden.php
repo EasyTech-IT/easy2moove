@@ -23,7 +23,7 @@ const SERVICES = [
 ];
 const MOVE_SERVICES = ['umzug', 'firmenumzug'];
 const CONTACT_PREFS = ['whatsapp' => 'WhatsApp', 'anruf' => 'Anruf', 'email' => 'E-Mail'];
-const CONTACT_ICONS = ['whatsapp' => '💬', 'anruf' => '📞', 'email' => '✉️'];
+const CONTACT_ICONS = ['whatsapp' => 'whatsapp', 'anruf' => 'phone', 'email' => 'mail'];
 
 function respond(int $status, array $payload): void
 {
@@ -150,33 +150,44 @@ $prefLabel = CONTACT_PREFS[$pref];
 $sentAt = (new DateTime('now', new DateTimeZone('Europe/Berlin')))->format('d.m.Y, H:i') . ' Uhr';
 $year = date('Y');
 
-function row(string $icon, string $label, string $valueHtml): string
+function icon(string $name, int $size = 32): string
 {
-    return '<tr><td style="padding:10px 12px;width:36px;vertical-align:top;font-size:20px;">' . $icon . '</td>'
-        . '<td style="padding:10px 0;vertical-align:top;"><div style="font-size:12px;color:#6b7280;text-transform:uppercase;letter-spacing:.05em;">'
-        . $label . '</div><div style="font-size:15px;color:#111827;font-weight:600;margin-top:2px;">' . $valueHtml . '</div></td></tr>';
+    return '<img src="' . SITE_URL . '/img/email/' . $name . '.png" width="' . $size . '" height="' . $size . '" alt="" style="display:block;border:0;width:' . $size . 'px;height:' . $size . 'px;">';
 }
 
-function layout(string $title, string $intro, string $rows, string $extra, string $footer): string
+function row(string $icon, string $label, string $valueHtml): string
+{
+    return '<tr><td style="padding:10px 12px;width:32px;vertical-align:top;">' . icon($icon) . '</td>'
+        . '<td style="padding:10px 0;vertical-align:top;"><div style="font-size:12px;color:#555555;text-transform:uppercase;letter-spacing:.05em;">'
+        . $label . '</div><div style="font-size:15px;color:#222222;font-weight:600;margin-top:2px;">' . $valueHtml . '</div></td></tr>';
+}
+
+function layout(string $title, string $titleIcon, string $intro, string $rows, string $extra, string $footer): string
 {
     return '<!DOCTYPE html><html lang="de"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"></head>'
-        . '<body style="margin:0;padding:24px 12px;background:#f3f4f6;font-family:Segoe UI,Helvetica,Arial,sans-serif;">'
-        . '<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="max-width:600px;margin:0 auto;background:#ffffff;border-radius:14px;overflow:hidden;box-shadow:0 2px 8px rgba(0,0,0,.08);">'
-        . '<tr><td style="background:#0f2a43;padding:26px 28px;"><div style="color:#ffffff;font-size:22px;font-weight:700;">🚚 ' . BRAND . '</div>'
-        . '<div style="color:#f59e0b;font-size:13px;margin-top:4px;">Umzüge &amp; Transporte</div></td></tr>'
-        . '<tr><td style="padding:28px 28px 8px;"><h1 style="margin:0 0 8px;font-size:20px;color:#111827;">' . $title . '</h1>'
-        . '<p style="margin:0;font-size:15px;line-height:1.5;color:#4b5563;">' . $intro . '</p></td></tr>'
-        . '<tr><td style="padding:12px 28px;"><table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:#f9fafb;border:1px solid #e5e7eb;border-radius:10px;">'
+        . '<body style="margin:0;padding:24px 12px;background:#f7f7f7;font-family:Inter,Segoe UI,Helvetica,Arial,sans-serif;">'
+        . '<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="max-width:600px;margin:0 auto;background:#ffffff;border-radius:12px;overflow:hidden;border:1px solid #dddddd;">'
+        . '<tr><td style="background:#ffffff;padding:24px 28px 20px;border-bottom:4px solid #00a859;"><a href="' . SITE_URL . '"><img src="' . SITE_URL . '/img/logo-nav.png" width="220" alt="' . BRAND . ' – Transport &amp; Vermietung" style="display:block;border:0;width:220px;max-width:100%;height:auto;"></a></td></tr>'
+        . '<tr><td style="padding:28px 28px 8px;"><table role="presentation" cellpadding="0" cellspacing="0"><tr><td style="padding-right:12px;vertical-align:middle;">' . icon($titleIcon, 40) . '</td>'
+        . '<td style="vertical-align:middle;"><h1 style="margin:0;font-size:20px;line-height:1.3;color:#222222;">' . $title . '</h1></td></tr></table>'
+        . '<p style="margin:12px 0 0;font-size:15px;line-height:1.5;color:#555555;">' . $intro . '</p></td></tr>'
+        . '<tr><td style="padding:12px 28px;"><table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:#f7f7f7;border:1px solid #eeeeee;border-radius:10px;">'
         . $rows . '</table></td></tr>' . $extra
-        . '<tr><td style="padding:20px 28px 28px;border-top:1px solid #e5e7eb;font-size:12px;line-height:1.6;color:#6b7280;">' . $footer . '</td></tr>'
+        . '<tr><td style="padding:20px 28px 28px;border-top:1px solid #eeeeee;font-size:12px;line-height:1.6;color:#555555;">' . $footer . '</td></tr>'
         . '</table></body></html>';
 }
 
 function messageBox(string $messageHtml): string
 {
-    return '<tr><td style="padding:4px 28px 16px;"><div style="font-size:12px;color:#6b7280;text-transform:uppercase;letter-spacing:.05em;margin-bottom:6px;">💬 Nachricht</div>'
-        . '<div style="background:#fffbeb;border-left:4px solid #f59e0b;border-radius:6px;padding:14px 16px;font-size:15px;line-height:1.6;color:#111827;">'
+    return '<tr><td style="padding:4px 28px 16px;"><table role="presentation" cellpadding="0" cellspacing="0" style="margin-bottom:6px;"><tr><td style="padding-right:8px;">' . icon('message', 24) . '</td>'
+        . '<td style="font-size:12px;color:#555555;text-transform:uppercase;letter-spacing:.05em;">Nachricht</td></tr></table>'
+        . '<div style="background:#f7f7f7;border-left:4px solid #00a859;border-radius:6px;padding:14px 16px;font-size:15px;line-height:1.6;color:#222222;">'
         . $messageHtml . '</div></td></tr>';
+}
+
+function ctaButton(string $href, string $label): string
+{
+    return '<a href="' . $href . '" style="display:inline-block;background:#00a859;color:#ffffff;text-decoration:none;font-weight:700;padding:12px 22px;border-radius:999px;">' . $label . '</a>';
 }
 
 $legalFooter = '© ' . $year . ' ' . BRAND . ' – Einzelunternehmen, Am Herrenhöfchen 22, 63654 Büdingen. Alle Rechte vorbehalten. '
@@ -186,23 +197,24 @@ $legalFooter = '© ' . $year . ' ' . BRAND . ' – Einzelunternehmen, Am Herrenh
 $messageHtml = nl2br(e($message), false);
 
 // --- Mail an den Geschäftsführer ---
-$ownerRows = row('🛠️', 'Leistung', e($serviceLabel))
-    . row('👤', 'Name', e($name))
-    . row('📞', 'Telefon', '<a href="tel:' . e(preg_replace('/[^0-9+]/', '', $phone) ?? '') . '" style="color:#0f2a43;text-decoration:none;">' . e($phone) . '</a>')
-    . row('✉️', 'E-Mail', '<a href="mailto:' . e($email) . '" style="color:#0f2a43;text-decoration:none;">' . e($email) . '</a>');
+$ownerRows = row('truck', 'Leistung', e($serviceLabel))
+    . row('user', 'Name', e($name))
+    . row('phone', 'Telefon', '<a href="tel:' . e(preg_replace('/[^0-9+]/', '', $phone) ?? '') . '" style="color:#007a3d;text-decoration:none;">' . e($phone) . '</a>')
+    . row('mail', 'E-Mail', '<a href="mailto:' . e($email) . '" style="color:#007a3d;text-decoration:none;">' . e($email) . '</a>');
 if ($isMove) {
-    $ownerRows .= row('📍', 'Von', e($from)) . row('🏁', 'Nach', e($to));
+    $ownerRows .= row('pin', 'Von', e($from)) . row('flag', 'Nach', e($to));
 }
 if ($dateDe !== '') {
-    $ownerRows .= row('📅', $dateLabel, e($dateDe));
+    $ownerRows .= row('calendar', $dateLabel, e($dateDe));
 }
 $ownerRows .= row(CONTACT_ICONS[$pref], 'Bevorzugter Kontaktweg', e($prefLabel));
 $ownerHtml = layout(
-    '📬 Neue Anfrage über die Webseite',
+    'Neue Anfrage über die Webseite',
+    'inbox',
     'Eingegangen am ' . e($sentAt) . '. Mit „Antworten“ erreichen Sie den Absender direkt.',
     $ownerRows,
     messageBox($messageHtml)
-    . '<tr><td style="padding:0 28px 24px;"><a href="mailto:' . e($email) . '" style="display:inline-block;background:#f59e0b;color:#111827;text-decoration:none;font-weight:700;padding:12px 22px;border-radius:8px;">↩ Jetzt antworten</a></td></tr>',
+    . '<tr><td style="padding:0 28px 24px;">' . ctaButton('mailto:' . e($email), 'Jetzt antworten') . '</td></tr>',
     'Die Einwilligung zur Datenverarbeitung gemäß Datenschutzerklärung wurde am ' . e($sentAt) . ' erteilt. Daten nur zur Bearbeitung der Anfrage verwenden (Art. 6 Abs. 1 lit. b DSGVO).<br><br>' . $legalFooter
 );
 $ownerText = "Neue Anfrage über die Webseite ($sentAt)\n\nLeistung: $serviceLabel\nName: $name\nTelefon: $phone\nE-Mail: $email\n"
@@ -210,22 +222,24 @@ $ownerText = "Neue Anfrage über die Webseite ($sentAt)\n\nLeistung: $serviceLab
     . "\nNachricht:\n$message\n\n© $year " . BRAND . ". Alle Rechte vorbehalten.\n";
 
 // --- Bestätigung an den Absender ---
-$confirmRows = row('🛠️', 'Leistung', e($serviceLabel));
+$confirmRows = row('truck', 'Leistung', e($serviceLabel));
 if ($isMove) {
-    $confirmRows .= row('📍', 'Von', e($from)) . row('🏁', 'Nach', e($to));
+    $confirmRows .= row('pin', 'Von', e($from)) . row('flag', 'Nach', e($to));
 }
 if ($dateDe !== '') {
-    $confirmRows .= row('📅', $dateLabel, e($dateDe));
+    $confirmRows .= row('calendar', $dateLabel, e($dateDe));
 }
-$confirmRows .= row('📞', 'Ihre Telefonnummer', e($phone));
+$confirmRows .= row('phone', 'Ihre Telefonnummer', e($phone));
 $confirmRows .= row(CONTACT_ICONS[$pref], 'Gewünschter Kontaktweg', e($prefLabel));
 $confirmHtml = layout(
-    '✅ Vielen Dank für Ihre Anfrage, ' . e($name) . '!',
+    'Vielen Dank für Ihre Anfrage, ' . e($name) . '!',
+    'check',
     'Wir haben Ihre Nachricht erhalten und melden uns schnellstmöglich bei Ihnen. Hier eine Zusammenfassung Ihrer Angaben:',
     $confirmRows,
     messageBox($messageHtml)
-    . '<tr><td style="padding:0 28px 24px;font-size:14px;color:#4b5563;line-height:1.6;">📞 Dringend? Rufen Sie uns an: <a href="tel:+4915567375105" style="color:#0f2a43;font-weight:600;">' . PHONE . '</a><br>'
-    . '✉️ Oder schreiben Sie an <a href="mailto:' . OWNER_MAIL . '" style="color:#0f2a43;font-weight:600;">' . OWNER_MAIL . '</a></td></tr>',
+    . '<tr><td style="padding:0 28px 24px;"><table role="presentation" cellpadding="0" cellspacing="0" style="font-size:14px;color:#555555;line-height:1.6;">'
+    . '<tr><td style="padding:0 10px 8px 0;">' . icon('phone', 24) . '</td><td style="padding-bottom:8px;">Dringend? Rufen Sie uns an: <a href="tel:+4915567375105" style="color:#007a3d;font-weight:600;">' . PHONE . '</a></td></tr>'
+    . '<tr><td style="padding:0 10px 0 0;">' . icon('mail', 24) . '</td><td>Oder schreiben Sie an <a href="mailto:' . OWNER_MAIL . '" style="color:#007a3d;font-weight:600;">' . OWNER_MAIL . '</a></td></tr></table></td></tr>',
     'Diese Bestätigung wurde automatisch erstellt, weil Ihre E-Mail-Adresse im Kontaktformular auf ' . SITE_HOST . ' angegeben wurde. '
     . 'Ihre Daten verwenden wir ausschließlich zur Bearbeitung Ihrer Anfrage. Sie haben das Recht auf Auskunft, Berichtigung und Löschung (siehe Datenschutzerklärung).<br><br>' . $legalFooter
 );
