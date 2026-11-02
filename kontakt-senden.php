@@ -76,7 +76,7 @@ if ($started > 0 && (time() - intdiv($started, 1000)) < 3) {
     respond(429, ['ok' => false, 'message' => 'Bitte versuchen Sie es erneut.']);
 }
 
-// Einfaches Rate-Limit pro IP (max. 5 Anfragen pro Stunde)
+// Einfaches Rate-Limit pro IP (max. 10 Anfragen pro Stunde)
 $ip = $_SERVER['REMOTE_ADDR'] ?? 'unknown';
 $rateFile = sys_get_temp_dir() . '/e2m_rate_' . hash('sha256', $ip);
 $hits = [];
@@ -86,7 +86,7 @@ if (is_file($rateFile)) {
         static fn(int $t): bool => $t > time() - 3600
     );
 }
-if (count($hits) >= 5) {
+if (count($hits) >= 10) {
     respond(429, ['ok' => false, 'message' => 'Zu viele Anfragen. Bitte versuchen Sie es später erneut.']);
 }
 
