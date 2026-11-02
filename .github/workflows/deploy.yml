@@ -46,7 +46,7 @@ jobs:
 
           lftp -u "$SFTP_USER","$SFTP_PASSWORD" \
             "sftp://$SFTP_HOST:$SFTP_PORT" \
-            -e "set sftp:auto-confirm yes; mirror --reverse --verbose --exclude-glob .git/ --exclude-glob .github/ --exclude-glob .vscode/ ./ /; rm -f /bewertung.html /css/bewertung.css /js/bewertung.js; bye"
+            -e "set sftp:auto-confirm yes; mirror --reverse --verbose --exclude-glob .git/ --exclude-glob .github/ --exclude-glob .vscode/ ./ /; rm -f /bewertung.html /css/bewertung.css /js/bewertung.js /zz-diag.php; bye"
 
       - name: Live-Deployment prüfen
         env:
