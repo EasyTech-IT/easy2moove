@@ -302,7 +302,7 @@ $confirmText = "Hallo $name,\n\nvielen Dank für Ihre Anfrage bei " . BRAND . ".
     . "Leistung: $serviceLabel\n" . ($isMove ? "Von: $from\nNach: $to\n" : '') . ($dateDe !== '' ? "$dateLabel: $dateDe\n" : '') . "Kontaktweg: $prefLabel\n"
     . "Telefon: $phone\n\nIhre Nachricht:\n$message\n\nTelefon: " . PHONE . "\nE-Mail: " . OWNER_MAIL . "\n\n© $year " . BRAND . ". Alle Rechte vorbehalten.\n";
 
-function sendMail(string $to, string $subject, string $text, string $html, string $replyTo = ''): bool
+function sendMail(string $to, string $subject, string $text, string $html, string $replyTo = '', float $wait = 1.5): bool
 {
     $boundary = 'e2m_' . bin2hex(random_bytes(8));
     $headers = [
@@ -330,7 +330,7 @@ function sendMail(string $to, string $subject, string $text, string $html, strin
         if (is_resource($proc)) {
             fwrite($pipes[0], $message);
             fclose($pipes[0]);
-            $deadline = microtime(true) + 4;
+            $deadline = microtime(true) + $wait;
             while (microtime(true) < $deadline) {
                 $status = proc_get_status($proc);
                 if (!$status['running']) {
@@ -369,4 +369,4 @@ if (function_exists('fastcgi_finish_request')) {
     fastcgi_finish_request();
 }
 
-sendMail($email, 'Ihre Anfrage bei ' . BRAND . ' – Bestätigung', $confirmText, $confirmHtml, OWNER_MAIL);
+sendMail($email, 'Ihre Anfrage bei ' . BRAND . ' – Bestätigung', $confirmText, $confirmHtml, OWNER_MAIL, 0.2);
