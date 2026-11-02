@@ -319,6 +319,30 @@ function sendMail(string $to, string $subject, string $text, string $html, strin
         . "--$boundary\r\nContent-Type: text/html; charset=UTF-8\r\nContent-Transfer-Encoding: base64\r\n\r\n"
         . chunk_split(base64_encode($html))
         . "--$boundary--";
+    // mail() wartet auf den Mailserver (teils >30 s); sendmail direkt starten und nur kurz auf Fehler warten
+    if (function_exists('proc_open')) {
+        $message = 'To: ' . $to . "\r\nSubject: " . encodeHeader($subject) . "\r\n" . implode("\r\n", $headers) . "\r\n\r\n" . $body;
+        $proc = @proc_open(
+            ['/usr/sbin/sendmail', '-t', '-i', '-f' . FROM_MAIL],
+            [0 => ['pipe', 'r'], 1 => ['file', '/dev/null', 'w'], 2 => ['file', '/dev/null', 'w']],
+            $pipes
+        );
+        if (is_resource($proc)) {
+            fwrite($pipes[0], $message);
+            fclose($pipes[0]);
+            $deadline = microtime(true) + 4;
+            while (microtime(true) < $deadline) {
+                $status = proc_get_status($proc);
+                if (!$status['running']) {
+                    $ok = $status['exitcode'] === 0;
+                    proc_close($proc);
+                    return $ok;
+                }
+                usleep(100000);
+            }
+            return true;
+        }
+    }
     return mail($to, encodeHeader($subject), $body, implode("\r\n", $headers), '-f' . FROM_MAIL);
 }
 
