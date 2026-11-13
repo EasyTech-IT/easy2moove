@@ -4,6 +4,8 @@
    Mobile-first · Floating Navbar · SVG Icons · 70vh Hero
    ========================================================================== */
 
+@import url("fonts.css");
+
 /* ---------- Reset & Basis ---------- */
 *,
 *::before,
