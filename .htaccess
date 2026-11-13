@@ -2,8 +2,21 @@ Options -Indexes
 DirectorySlash Off
 DirectoryIndex index.html index.php
 
+<IfModule mod_headers.c>
+Header always set Strict-Transport-Security "max-age=31536000" "expr=%{SERVER_PORT} == 443"
+Header always set X-Frame-Options "DENY"
+Header always set X-Content-Type-Options "nosniff"
+Header always set Referrer-Policy "strict-origin-when-cross-origin"
+Header always set Permissions-Policy "camera=(), microphone=(), geolocation=()"
+Header always set Content-Security-Policy "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com; img-src 'self' data: https://res.cloudinary.com; font-src 'self' https://cdnjs.cloudflare.com; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'"
+</IfModule>
+
 <IfModule mod_rewrite.c>
 RewriteEngine On
+
+# IONOS empfiehlt die Weiterleitung anhand des Server-Ports.
+RewriteCond %{SERVER_PORT} !=443
+RewriteRule ^(.*)$ https://easy2moove.de/$1 [R=301,L]
 
 # Alte Adressen mit .html (z. B. aus QR-Codes) dauerhaft auf die saubere URL umleiten
 RewriteCond %{THE_REQUEST} \s/+index\.html[\s?] [NC]
