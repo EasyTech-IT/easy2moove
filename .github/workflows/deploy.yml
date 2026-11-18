@@ -44,9 +44,30 @@ jobs:
           test -n "$SFTP_PASSWORD" || { echo "GitHub Secret FTP_PASSWORD fehlt."; exit 1; }
           test -n "$SFTP_PORT" || { echo "GitHub Secret FTP_PORT fehlt."; exit 1; }
 
+          scanned_keys="$RUNNER_TEMP/ionos_sftp_host_keys"
+          known_hosts="$RUNNER_TEMP/ionos_known_hosts"
+          ssh-keyscan -T 10 -p "$SFTP_PORT" "$SFTP_HOST" > "$scanned_keys" 2>/dev/null \
+            || { echo "IONOS-SFTP-Hostkeys konnten nicht abgerufen werden."; exit 1; }
+          : > "$known_hosts"
+
+          while IFS= read -r key; do
+            [[ -z "$key" || "$key" == \#* ]] && continue
+            printf '%s\n' "$key" > "$RUNNER_TEMP/ionos_sftp_host_key"
+            fingerprint="$(ssh-keygen -lf "$RUNNER_TEMP/ionos_sftp_host_key" -E sha256 | awk 'NR == 1 {print $2}')"
+
+            case "$fingerprint" in
+              SHA256:J4oM+B2g7zZWAI3DolXR1e4vdIMrGO301kEN14/slsQ|SHA256:psLDE8kfhoS9GWrc/GTrdlPvyKPcWcGZv2JxOCvwF3w|SHA256:1gx2w8Rtv3wCgi7Jh8myf/KVd72cRQbow03UP8P095Q)
+                printf '%s\n' "$key" >> "$known_hosts"
+                echo "IONOS-SFTP-Hostkey verifiziert: $fingerprint"
+                ;;
+            esac
+          done < "$scanned_keys"
+
+          test -s "$known_hosts" || { echo "Kein SFTP-Hostkey stimmt mit den offiziellen IONOS-Fingerprints überein."; exit 1; }
+
           lftp -u "$SFTP_USER","$SFTP_PASSWORD" \
             "sftp://$SFTP_HOST:$SFTP_PORT" \
-            -e "set sftp:auto-confirm yes; mirror --reverse --verbose --exclude-glob .git/ --exclude-glob .github/ --exclude-glob .vscode/ ./ /; rm -f /bewertung.html /css/bewertung.css /js/bewertung.js /zz-diag.php; bye"
+            -e "set sftp:connect-program \"ssh -a -x -o StrictHostKeyChecking=yes -o UserKnownHostsFile=$known_hosts\"; mirror --reverse --verbose --exclude-glob .git/ --exclude-glob .github/ --exclude-glob .vscode/ ./ /; rm -f /bewertung.html /css/bewertung.css /js/bewertung.js /zz-diag.php; bye"
 
       - name: Live-Deployment prüfen
         env:
